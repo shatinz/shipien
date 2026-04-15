@@ -1,0 +1,13 @@
+[Unit]
+Description=Shipien VPN Telegram Bot
+After=network.target
+
+[Service]
+User=root
+WorkingDirectory=/root/shipien
+ExecStart=/root/shipien/venv/bin/python shipienbot.py
+Restart=always
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target
