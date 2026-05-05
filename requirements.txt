@@ -1,1 +1,3 @@
-pyTelegramBotAPI 
+pyTelegramBotAPI
+qrcode[pil]
+Pillow
