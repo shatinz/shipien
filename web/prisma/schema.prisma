@@ -1,0 +1,70 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("POSTGRES_PRISMA_URL") // uses connection pooling
+  directUrl = env("POSTGRES_URL_NON_POOLING") // uses a direct connection
+}
+
+model User {
+  id            String   @id @default(cuid())
+  username      String   @unique
+  phone         String
+  passwordHash  String
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  subscriptions VpnSubscription[]
+  receipts      PaymentReceipt[]
+}
+
+model VpnPlan {
+  id          String   @id @default(cuid())
+  name        String
+  price       Int
+  duration    Int      // in days
+  bandwidth   String   // e.g. "50 GB"
+  description String
+  features    String   // JSON array stored as string
+  active      Boolean  @default(true)
+  sortOrder   Int      @default(0)
+  createdAt   DateTime @default(now())
+
+  subscriptions VpnSubscription[]
+}
+
+model VpnSubscription {
+  id        String    @id @default(cuid())
+  userId    String
+  planId    String
+  status    String    @default("pending") // pending | active | expired | rejected
+  config    String?   // VPN config string / link
+  expiresAt DateTime?
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+
+  user    User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+  plan    VpnPlan         @relation(fields: [planId], references: [id])
+  receipt PaymentReceipt?
+}
+
+model PaymentReceipt {
+  id             String   @id @default(cuid())
+  userId         String
+  subscriptionId String   @unique
+  receiptData    String   @db.Text // base64 or text description
+  receiptType    String   @default("text") // image | text
+  status         String   @default("pending") // pending | approved | rejected
+  telegramMsgId  Int?
+  adminNote      String?
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  user         User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+  subscription VpnSubscription @relation(fields: [subscriptionId], references: [id], onDelete: Cascade)
+}

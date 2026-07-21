@@ -1,0 +1,1237 @@
+{
+  "8373593549": {
+    "username": "Shipienadmin",
+    "first_name": "Shipien",
+    "last_name": null,
+    "status": "rejected",
+    "lang": "fa",
+    "plan": "month",
+    "user_state": null,
+    "pending_plan": null,
+    "last_plan": "2gb_1month",
+    "user_type": "old",
+    "pending_quantity": 1,
+    "admin_state": null,
+    "bale_chat_id": "102284153"
+  },
+  "6157617247": {
+    "username": "Shitinaa",
+    "first_name": ".",
+    "last_name": null,
+    "status": "started",
+    "lang": "fa",
+    "plan": "month",
+    "admin_state": null,
+    "user_type": "old",
+    "pending_plan": null,
+    "pending_quantity": 1,
+    "last_plan": "1gb_1month",
+    "user_state": "waiting_for_bale_media",
+    "wallet_balance": 1000,
+    "bale_chat_id": "This and personal config are unknown situation"
+  },
+  "205320476": {
+    "username": null,
+    "first_name": "Unknown",
+    "last_name": null,
+    "status": "started",
+    "lang": "fa",
+    "user_state": null
+  },
+  "524144168": {
+    "username": "ss_hang",
+    "first_name": "Silhouette",
+    "last_name": null,
+    "status": "started",
+    "lang": "fa",
+    "pending_plan": "1gb_1month"
+  },
+  "287141492": {
+    "username": "shayanasgarian",
+    "first_name": "Shay",
+    "last_name": null,
+    "status": "started",
+    "lang": "fa"
+  },
+  "5072209430": {
+    "username": "getthefuuckoutt",
+    "first_name": "𝔖𝔥𝔞𝔥𝔦𝔑",
+    "last_name": null,
+    "status": "approved",
+    "lang": "fa",
+    "pending_plan": null,
+    "last_plan": "1gb_1month",
+    "user_type": "old"
+  },
+  "7847322843": {
+    "username": "Ahgxyao",
+    "first_name": "Erfan bro2",
+    "last_name": null,
+    "status": "started",
+    "lang": "fa",
+    "user_type": "old"
+  },
+  "5733065160": {
+    "username": "sahardkm",
+    "first_name": "s",
+    "last_name": null,
+    "status": "started",
+    "lang": "fa",
+    "user_state": null,
+    "user_type": "old"
+  },
+  "5456539171": {
+    "username": "Ughpphgu",
+    "first_name": "A",
+    "last_name": null,
+    "status": "started",
+    "lang": "fa",
+    "user_type": "old"
+  },
+  "5892286206": {
+    "username": "Kavvyyyaa",
+    "first_name": "Kavya",
+    "last_name": null,
+    "status": "started",
+    "lang": "fa",
+    "pending_plan": "1gb_1month",
+    "pending_quantity": 1,
+    "user_type": "old"
+  },
+  "5617943595": {
+    "username": "Amintiger68",
+    "first_name": "Amin",
+    "last_name": null,
+    "status": "started",
+    "lang": "fa",
+    "user_state": "waiting_for_prize_code",
+    "user_type": "old"
+  },
+  "91089300": {
+    "username": "rezasiampour",
+    "first_name": "Reza",
+    "last_name": "Siampour",
+    "status": "approved",
+    "user_type": "trusted_seller",
+    "lang": "fa",
+    "pending_plan": null,
+    "user_state": "waiting_for_bale_id",
+    "pending_quantity": 1,
+    "buy_count": 18,
+    "purchase_history": [
+      {
+        "timestamp": 1777996827.9364884,
+        "plan_key": "1gb_unlimited",
+        "links": [
+          "http://185.231.181.118:2096/sub/b8cy31xohxzycvvg",
+          "http://185.231.181.118:2096/sub/qtqk7dlh6822oqfk"
+        ]
+      },
+      {
+        "timestamp": 1778063800.1846452,
+        "plan_key": "1gb_unlimited",
+        "links": [
+          "http://185.231.181.118:2096/sub/3szwybjfsfksjcw4"
+        ]
+      },
+      {
+        "timestamp": 1778163091.6031127,
+        "plan_key": "1gb_unlimited",
+        "links": [
+          "http://185.231.181.118:2096/sub/bqbzvsqs012n97ns"
+        ]
+      },
+      {
+        "timestamp": 1778163112.0167565,
+        "plan_key": "1gb_unlimited",
+        "links": [
+          "http://185.231.181.118:2096/sub/cxadi2wl96xpmvcg",
+          "http://185.231.181.118:2096/sub/rgquylbdkijybcnt"
+        ]
+      },
+      {
+        "timestamp": 1778163168.6803892,
+        "plan_key": "1gb_unlimited",
+        "links": [
+          "http://185.231.181.118:2096/sub/cuz6e8qgymsi556v"
+        ]
+      },
+      {
+        "timestamp": 1778501870.2867599,
+        "plan_key": "1gb-1month",
+        "links": [
+          "https://info2.vertu-parsi.ir:2053/info/Roya25",
+          "https://info2.vertu-parsi.ir:2053/info/roya20"
+        ]
+      },
+      {
+        "timestamp": 1778502381.1915948,
+        "plan_key": "1gb-1month",
+        "links": [
+          "https://info2.vertu-parsi.ir:2053/info/Roya21"
+        ]
+      },
+      {
+        "timestamp": 1778521264.5456293,
+        "plan_key": "2gb-1month",
+        "links": [
+          "https://info2.vertu-parsi.ir:2053/info/Roya27",
+          "https://info2.vertu-parsi.ir:2053/info/Roya29"
+        ]
+      },
+      {
+        "timestamp": 1778521297.8212795,
+        "plan_key": "1gb-1month",
+        "links": [
+          "https://info2.vertu-parsi.ir:2053/info/roya19"
+        ]
+      },
+      {
+        "timestamp": 1778599355.405016,
+        "plan_key": "1gb-1month",
+        "links": [
+          "https://info2.vertu-parsi.ir:2053/info/roya16"
+        ]
+      },
+      {
+        "timestamp": 1778756742.3189936,
+        "plan_key": "5gb-1month",
+        "links": [
+          "https://info2.vertu-parsi.ir:2053/info/Roya32"
+        ]
+      },
+      {
+        "timestamp": 1778842255.3741987,
+        "plan_key": "2gb-1month",
+        "links": [
+          "https://info1.vertu-parsi.ir:2096/info/roya36"
+        ]
+      },
+      {
+        "timestamp": 1778848226.7864523,
+        "plan_key": "1gb-1month",
+        "links": [
+          "https://info1.vertu-parsi.ir:2096/info/roya40"
+        ]
+      },
+      {
+        "timestamp": 1778931810.1461446,
+        "plan_key": "1gb-1month",
+        "links": [
+          "https://info1.vertu-parsi.ir:2096/info/roya45"
+        ]
+      },
+      {
+        "timestamp": 1779102214.6075034,
+        "plan_key": "2gb-1month",
+        "links": [
+          "https://info1.vertu-parsi.ir:2096/info/roya52",
+          "https://info1.vertu-parsi.ir:2096/info/roya51"
+        ]
+      },
+      {
+        "timestamp": 1779112258.2861838,
+        "plan_key": "2gb-1month",
+        "links": [
+          "https://info1.vertu-parsi.ir:2096/info/roya50"
+        ],
+        "qty": 1,
+        "price": 700000
+      },
+      {
+        "timestamp": 1779275446.0016208,
+        "plan_key": "1gb-1month",
+        "links": [
+          "https://info2.vertu-parsi.ir:2053/info/Maziar7"
+        ],
+        "qty": 1,
+        "price": 350000
+      },
+      {
+        "timestamp": 1779366944.4942293,
+        "plan_key": "2gb-1month",
+        "links": [
+          "https://info2.vertu-parsi.ir:2053/info/maziyar3"
+        ],
+        "qty": 1,
+        "price": 700000
+      }
+    ],
+    "debt": 2410000,
+    "last_plan": "2gb-1month",
+    "debt_history": [
+      {
+        "timestamp": 1778016050.6838956,
+        "amount": 6560000,
+        "description": "بدهی قبلی",
+        "new_total": 7060000
+      },
+      {
+        "timestamp": 1778140029.0771787,
+        "amount": -6560000,
+        "description": "واریز کارت به کارت",
+        "new_total": 750000
+      },
+      {
+        "timestamp": 1778140130.3274012,
+        "amount": 2100000,
+        "description": "5gb-unlimited 2",
+        "new_total": 2850000
+      },
+      {
+        "timestamp": 1778426447.3306718,
+        "amount": -1300000,
+        "description": "No description",
+        "new_total": 2550000
+      },
+      {
+        "timestamp": 1778522780.5046751,
+        "amount": -800000,
+        "description": "No description",
+        "new_total": 4590000
+      },
+      {
+        "timestamp": 1778661841.436754,
+        "amount": -3100000,
+        "description": "No description",
+        "new_total": 1850000
+      },
+      {
+        "timestamp": 1778925009.3410025,
+        "amount": -3800000,
+        "description": "No description",
+        "new_total": 660000
+      },
+      {
+        "timestamp": 1778935097.7470737,
+        "amount": -360000,
+        "description": "No description",
+        "new_total": 660000
+      },
+      {
+        "timestamp": 1779105473.610815,
+        "amount": -1400,
+        "description": "No description",
+        "new_total": 660000
+      }
+    ]
+  },
+  "132197857": {
+    "username": "Mattioss",
+    "first_name": "Matt🚀",
+    "last_name": null,
+    "status": "started",
+    "user_type": "old",
+    "lang": "fa"
+  },
+  "88129429": {
+    "username": "Farazdada",
+    "first_name": "FaraZ",
+    "last_name": null,
+    "status": "approved",
+    "user_type": "new",
+    "lang": "fa",
+    "pending_plan": null,
+    "pending_quantity": 1,
+    "user_state": null,
+    "wallet_balance": 0,
+    "last_plan": "1gb_unlimited",
+    "buy_count": 1,
+    "purchase_history": [
+      {
+        "timestamp": 1778161031.0838068,
+        "plan_key": "1gb_unlimited",
+        "links": [
+          "http://185.231.181.118:2096/sub/zpe9mf9eccur6b8q"
+        ]
+      }
+    ]
+  },
+  "261074561": {
+    "username": "Sepehr_deh",
+    "first_name": "SEPEHR",
+    "last_name": null,
+    "status": "started",
+    "user_type": "new",
+    "lang": "fa"
+  },
+  "596446863": {
+    "username": "daniya1hz",
+    "first_name": "Daniyal_hz",
+    "last_name": null,
+    "status": "started",
+    "user_type": "old",
+    "lang": "fa"
+  },
+  "344428757": {
+    "username": "amirandhim",
+    "first_name": "Amirandhim",
+    "last_name": null,
+    "status": "started",
+    "user_type": "old",
+    "lang": "fa"
+  },
+  "5831853287": {
+    "username": "keeeeyvaaaan",
+    "first_name": "🫅🏻",
+    "last_name": null,
+    "status": "started",
+    "lang": "fa"
+  },
+  "1077823279": {
+    "username": "dragon_tunel",
+    "first_name": "....",
+    "last_name": null,
+    "status": "approved",
+    "lang": "fa",
+    "user_state": null,
+    "user_type": "trusted_seller",
+    "pending_plan": null,
+    "pending_quantity": 1,
+    "buy_count": 24,
+    "purchase_history": [
+      {
+        "timestamp": 1777998764.6460314,
+        "plan_key": "1gb_unlimited",
+        "links": [
+          "http://185.231.181.118:2096/sub/2p7o30e5lavyu4q0",
+          "http://185.231.181.118:2096/sub/ze4ex1wht0l24kle",
+          "http://185.231.181.118:2096/sub/ercqdxqaf9cmvx3v"
+        ]
+      },
+      {
+        "timestamp": 1778065306.3002,
+        "plan_key": "1gb_unlimited",
+        "links": [
+          "http://185.231.181.118:2096/sub/1bc4vzx34ejsyarj",
+          "http://185.231.181.118:2096/sub/0fm6av7g7n5iepp3",
+          "http://185.231.181.118:2096/sub/8hsl0cnlvhz32jwm"
+        ]
+      },
+      {
+        "timestamp": 1778150754.6011279,
+        "plan_key": "premium_unlimited",
+        "links": [
+          "http://193.151.142.192:2096/sub/98d8mqm2ho162136/"
+        ]
+      },
+      {
+        "timestamp": 1778190163.8401852,
+        "plan_key": "premium_unlimited",
+        "links": [
+          "http://193.151.142.192:2096/sub/d3p4yhjfc35ow48j/"
+        ]
+      },
+      {
+        "timestamp": 1778444620.9105618,
+        "plan_key": "1gb-1month",
+        "links": [
+          "https://info2.vertu-parsi.ir:2053/info/Roya9"
+        ]
+      },
+      {
+        "timestamp": 1778488166.2787678,
+        "plan_key": "1gb-1month",
+        "links": [
+          "https://info2.vertu-parsi.ir:2053/info/Roya10"
+        ]
+      },
+      {
+        "timestamp": 1778536163.8355646,
+        "plan_key": "1gb-1month",
+        "links": [
+          "https://info2.vertu-parsi.ir:2053/info/roya17"
+        ]
+      },
+      {
+        "timestamp": 1778604975.1451733,
+        "plan_key": "1gb-1month",
+        "links": [
+          "https://info2.vertu-parsi.ir:2053/info/roya18"
+        ]
+      },
+      {
+        "timestamp": 1778673319.171332,
+        "plan_key": "2gb-1month",
+        "links": [
+          "https://info2.vertu-parsi.ir:2053/info/Roya28"
+        ]
+      },
+      {
+        "timestamp": 1778694640.806262,
+        "plan_key": "2gb-1month",
+        "links": [
+          "https://info1.vertu-parsi.ir:2096/info/roya35"
+        ]
+      },
+      {
+        "timestamp": 1778702200.6395843,
+        "plan_key": "2gb-1month",
+        "links": [
+          "https://info1.vertu-parsi.ir:2096/info/roya34"
+        ]
+      },
+      {
+        "timestamp": 1778705376.9319308,
+        "plan_key": "1gb-1month",
+        "links": [
+          "https://info1.vertu-parsi.ir:2096/info/roya38"
+        ]
+      },
+      {
+        "timestamp": 1778705864.1136322,
+        "plan_key": "1gb-1month",
+        "links": [
+          "https://info1.vertu-parsi.ir:2096/info/roya42"
+        ]
+      },
+      {
+        "timestamp": 1778706153.3716252,
+        "plan_key": "1gb-1month",
+        "links": [
+          "https://info1.vertu-parsi.ir:2096/info/roya39"
+        ]
+      },
+      {
+        "timestamp": 1778871697.4535484,
+        "plan_key": "2gb-1month",
+        "links": [
+          "https://info1.vertu-parsi.ir:2096/info/roya37"
+        ]
+      },
+      {
+        "timestamp": 1778925580.8602006,
+        "plan_key": "2gb-1month",
+        "links": [
+          "https://info1.vertu-parsi.ir:2096/info/roya48"
+        ]
+      },
+      {
+        "timestamp": 1779014123.0842755,
+        "plan_key": "2gb-1month",
+        "links": [
+          "https://info1.vertu-parsi.ir:2096/info/roya49"
+        ]
+      },
+      {
+        "timestamp": 1779049283.0513878,
+        "plan_key": "1gb-1month",
+        "links": [
+          "https://info1.vertu-parsi.ir:2096/info/roya47"
+        ]
+      },
+      {
+        "timestamp": 1779131109.0980513,
+        "plan_key": "1gb-1month",
+        "links": [
+          "https://info2.vertu-parsi.ir:2053/info/Maziar9"
+        ],
+        "qty": 1,
+        "price": 350000
+      },
+      {
+        "timestamp": 1779234270.141206,
+        "plan_key": "1gb-1month",
+        "links": [
+          "https://info2.vertu-parsi.ir:2053/info/Maziar10"
+        ],
+        "qty": 1,
+        "price": 350000
+      },
+      {
+        "timestamp": 1779470836.0854626,
+        "plan_key": "2gb-1month",
+        "links": [
+          "https://info2.vertu-parsi.ir:2053/info/maziyar5"
+        ],
+        "qty": 1,
+        "price": 700000
+      },
+      {
+        "timestamp": 1779806474.3796968,
+        "plan_key": "2gb-1month",
+        "links": [
+          "https://info2.vertu-parsi.ir:2053/info/maziyar4"
+        ],
+        "qty": 1,
+        "price": 700000
+      },
+      {
+        "timestamp": 1780083720.994045,
+        "plan_key": "10gb-1month",
+        "links": [
+          "vless://9a982097-f5d3-49a4-ba46-7d9586295d58@varzesh3.com:80?type=ws&path=%2F&host=s3.tehranionliine.ir&security=none#super 💎💎nZ7p8pDbK8",
+          "vless://5935a672-3f58-4551-baa7-35584df2bde0@varzesh3.com:80?type=ws&path=%2F&host=s3.tehranionliine.ir&security=none#super 💎💎rsJmNpPfg6",
+          "vless://e9c39720-ca88-43e3-b33a-ef8bcd1f82d4@varzesh3.com:80?type=ws&path=%2F&host=s3.tehranionliine.ir&security=none#super 💎💎x3OQtDuvlZ"
+        ],
+        "qty": 3,
+        "price": 450000
+      },
+      {
+        "timestamp": 1780166346.9336424,
+        "plan_key": "10gb-1month",
+        "links": [
+          "vless://23fb2469-0b52-479b-a957-4960046fed3c@varzesh3.com:80?type=ws&path=%2F&host=s3.tehranionliine.ir&security=none#super 💎💎f1ukEMuFKi",
+          "vless://d195464a-835e-4b34-97ed-adf829e0c6cd@varzesh3.com:80?type=ws&path=%2F&host=po.masterdadeh.ir&security=none#Tr vahshi⚡️dZQhUOzJA",
+          "vless://97b4eb8a-a4c9-4646-9a73-d03fbb9b1598@varzesh3.com:80?type=ws&path=%2F&host=s3.tehranionliine.ir&security=none#super 💎💎8QuXrbbHaP"
+        ],
+        "qty": 3,
+        "price": 450000
+      }
+    ],
+    "debt": 10970700,
+    "last_plan": "10gb-1month",
+    "debt_history": [
+      {
+        "timestamp": 1778015805.3065877,
+        "amount": 1600,
+        "description": "-",
+        "new_total": 751600
+      },
+      {
+        "timestamp": 1778015946.6484747,
+        "amount": -1600,
+        "description": "No description",
+        "new_total": 750000
+      },
+      {
+        "timestamp": 1778015980.0707915,
+        "amount": -1600000,
+        "description": "واریز و طلب قبلی",
+        "new_total": -850000
+      }
+    ]
+  },
+  "8570162584": {
+    "buy_count": 0,
+    "purchase_history": [],
+    "wallet_balance": 0,
+    "debt": 0,
+    "debt_history": [],
+    "trusted_plans": {},
+    "username": "Klxnmnn",
+    "first_name": "Ali",
+    "last_name": null,
+    "status": "started",
+    "lang": "en"
+  },
+  "358244429": {
+    "buy_count": 0,
+    "purchase_history": [],
+    "wallet_balance": 0,
+    "debt": 0,
+    "debt_history": [],
+    "trusted_plans": {},
+    "username": "mahdi00136600",
+    "first_name": "m",
+    "last_name": "hb",
+    "status": "started",
+    "lang": "fa"
+  },
+  "8223641403": {
+    "buy_count": 1,
+    "purchase_history": [
+      {
+        "timestamp": 1780156601.971915,
+        "plan_key": "10gb-1month",
+        "links": [
+          "vless://236dc4ff-74ba-4943-9728-a716a1bb8253@varzesh3.com:80?type=ws&path=%2F&host=s3.tehranionliine.ir&security=none#super 💎💎Opfq6ECtW"
+        ],
+        "qty": 1,
+        "price": 150000
+      }
+    ],
+    "wallet_balance": 0,
+    "debt": 0,
+    "debt_history": [],
+    "trusted_plans": {},
+    "username": null,
+    "first_name": "Mohamad",
+    "last_name": null,
+    "status": "approved",
+    "lang": "fa",
+    "user_state": null,
+    "pending_plan": null,
+    "pending_quantity": 1,
+    "last_plan": "10gb-1month"
+  },
+  "6189918124": {
+    "buy_count": 0,
+    "purchase_history": [],
+    "wallet_balance": 0,
+    "debt": 0,
+    "debt_history": [],
+    "trusted_plans": {},
+    "username": "marymahmadi",
+    "first_name": "Maryam",
+    "last_name": null,
+    "status": "started",
+    "lang": "fa"
+  },
+  "5829964077": {
+    "buy_count": 0,
+    "purchase_history": [],
+    "wallet_balance": 0,
+    "debt": 0,
+    "debt_history": [],
+    "trusted_plans": {},
+    "username": null,
+    "first_name": "Bardia",
+    "last_name": null,
+    "status": "started",
+    "lang": "fa"
+  },
+  "84750768": {
+    "buy_count": 0,
+    "purchase_history": [],
+    "wallet_balance": 0,
+    "debt": 0,
+    "debt_history": [],
+    "trusted_plans": {},
+    "username": "h_saam6",
+    "first_name": "Hesam",
+    "last_name": null,
+    "status": "started",
+    "lang": "fa"
+  },
+  "185097996": {
+    "buy_count": 0,
+    "purchase_history": [],
+    "wallet_balance": 0,
+    "debt": 0,
+    "debt_history": [],
+    "trusted_plans": {},
+    "username": "prmkz",
+    "first_name": "Hossein",
+    "last_name": "Fazli",
+    "status": "started",
+    "lang": "fa"
+  },
+  "866244799": {
+    "buy_count": 0,
+    "purchase_history": [],
+    "wallet_balance": 0,
+    "debt": 0,
+    "debt_history": [],
+    "trusted_plans": {},
+    "username": "maze_yar",
+    "first_name": "Maz",
+    "last_name": null,
+    "status": "started",
+    "lang": "fa"
+  },
+  "107028887": {
+    "buy_count": 0,
+    "purchase_history": [],
+    "wallet_balance": 0,
+    "debt": 0,
+    "debt_history": [],
+    "trusted_plans": {},
+    "username": "Notimortanto",
+    "first_name": "-- .. ... .- --.-",
+    "last_name": null,
+    "status": "started",
+    "lang": "fa"
+  },
+  "1755363": {
+    "buy_count": 0,
+    "purchase_history": [],
+    "wallet_balance": 0,
+    "debt": 0,
+    "debt_history": [],
+    "trusted_plans": {},
+    "username": "msasany",
+    "first_name": "m.sasany",
+    "last_name": null,
+    "status": "started",
+    "lang": "fa"
+  },
+  "515397452": {
+    "buy_count": 0,
+    "purchase_history": [],
+    "wallet_balance": 0,
+    "debt": 0,
+    "debt_history": [],
+    "trusted_plans": {},
+    "username": "sian_manager",
+    "first_name": "Mzi",
+    "last_name": null,
+    "status": "started",
+    "lang": "fa"
+  },
+  "571513868": {
+    "buy_count": 0,
+    "purchase_history": [],
+    "wallet_balance": 0,
+    "debt": 0,
+    "debt_history": [],
+    "trusted_plans": {},
+    "username": "MOTATOM",
+    "first_name": "M98",
+    "last_name": null,
+    "status": "started",
+    "lang": "fa"
+  },
+  "87828760": {
+    "buy_count": 0,
+    "purchase_history": [],
+    "wallet_balance": 0,
+    "debt": 0,
+    "debt_history": [],
+    "trusted_plans": {},
+    "username": "D_oos_t",
+    "first_name": "-",
+    "last_name": null,
+    "status": "started",
+    "lang": "fa"
+  },
+  "155675320": {
+    "buy_count": 0,
+    "purchase_history": [],
+    "wallet_balance": 0,
+    "debt": 0,
+    "debt_history": [],
+    "trusted_plans": {},
+    "username": "alireza_m7294",
+    "first_name": "Alireza.M",
+    "last_name": null,
+    "status": "started",
+    "lang": "fa"
+  },
+  "117340214": {
+    "buy_count": 0,
+    "purchase_history": [],
+    "wallet_balance": 0,
+    "debt": 0,
+    "debt_history": [],
+    "trusted_plans": {},
+    "username": "NiMa_EkHtYaRdInI",
+    "first_name": "☇N҉I҉M҉A҉",
+    "last_name": null,
+    "status": "started",
+    "lang": "fa",
+    "pending_plan": "charge_wallet_820000",
+    "pending_quantity": 1,
+    "user_state": null
+  },
+  "676893885": {
+    "buy_count": 0,
+    "purchase_history": [],
+    "wallet_balance": 0,
+    "debt": 0,
+    "debt_history": [],
+    "trusted_plans": {},
+    "username": "amoozanjirbaft",
+    "first_name": "امپراطور",
+    "last_name": null,
+    "status": "started",
+    "lang": "fa",
+    "pending_plan": "40gb-20days",
+    "pending_quantity": 1,
+    "user_state": "waiting_for_charge_amount"
+  },
+  "1033988829": {
+    "buy_count": 0,
+    "purchase_history": [],
+    "wallet_balance": 0,
+    "debt": 0,
+    "debt_history": [],
+    "trusted_plans": {},
+    "username": "aaaa20188",
+    "first_name": "Amir",
+    "last_name": null,
+    "status": "started",
+    "lang": "fa"
+  },
+  "6281235776": {
+    "buy_count": 0,
+    "purchase_history": [],
+    "wallet_balance": 0,
+    "debt": 0,
+    "debt_history": [],
+    "trusted_plans": {},
+    "username": "Kairoxsupport",
+    "first_name": "Support",
+    "last_name": "Kairox",
+    "status": "started",
+    "lang": "fa",
+    "user_state": "waiting_for_bale_id"
+  },
+  "6694366981": {
+    "buy_count": 0,
+    "purchase_history": [],
+    "wallet_balance": 0,
+    "debt": 0,
+    "debt_history": [],
+    "trusted_plans": {},
+    "username": "Yasiinstoic",
+    "first_name": "Yas",
+    "last_name": null,
+    "status": "started",
+    "lang": "en",
+    "pending_plan": "1gb-1month",
+    "pending_quantity": 1,
+    "user_state": "waiting_for_charge_amount"
+  },
+  "7808838059": {
+    "buy_count": 0,
+    "purchase_history": [],
+    "wallet_balance": 30,
+    "debt": 0,
+    "debt_history": [],
+    "trusted_plans": {},
+    "username": null,
+    "first_name": "ARISU",
+    "last_name": null,
+    "status": "started",
+    "lang": "fa",
+    "pending_plan": "1gb-1month",
+    "pending_quantity": 1,
+    "user_state": null,
+    "referrals_list": [
+      {
+        "uid": "8211082798",
+        "timestamp": 1778756365.9497914
+      }
+    ],
+    "ref_count": 1,
+    "bonuses_claimed": []
+  },
+  "8211082798": {
+    "buy_count": 0,
+    "purchase_history": [],
+    "wallet_balance": 0,
+    "debt": 0,
+    "debt_history": [],
+    "trusted_plans": {},
+    "username": "CREVELS",
+    "first_name": "𝗖𝗥𝗘𝗩𝗘𝗟𝗦",
+    "last_name": null,
+    "status": "started",
+    "lang": "fa"
+  },
+  "61330801": {
+    "buy_count": 0,
+    "purchase_history": [],
+    "wallet_balance": 0,
+    "debt": 0,
+    "debt_history": [],
+    "trusted_plans": {},
+    "username": "Dante53",
+    "first_name": "DΛИƬƐ",
+    "last_name": null,
+    "status": "started",
+    "lang": "fa"
+  },
+  "74897726": {
+    "buy_count": 0,
+    "purchase_history": [],
+    "wallet_balance": 0,
+    "debt": 0,
+    "debt_history": [],
+    "trusted_plans": {},
+    "username": "MohammadrezMafi",
+    "first_name": "MohammadReza",
+    "last_name": "Mafi",
+    "status": "started",
+    "lang": "fa",
+    "user_state": null
+  },
+  "5612196479": {
+    "buy_count": 0,
+    "purchase_history": [],
+    "wallet_balance": 0,
+    "debt": 0,
+    "debt_history": [],
+    "trusted_plans": {},
+    "username": "TicketDead",
+    "first_name": "Hamed",
+    "last_name": null,
+    "status": "started",
+    "lang": "en"
+  },
+  "6071232211": {
+    "buy_count": 0,
+    "purchase_history": [],
+    "wallet_balance": 0,
+    "debt": 0,
+    "debt_history": [],
+    "trusted_plans": {},
+    "username": "oiahmad",
+    "first_name": "Scott",
+    "last_name": null,
+    "status": "started",
+    "lang": "fa"
+  },
+  "383465704": {
+    "buy_count": 0,
+    "purchase_history": [],
+    "wallet_balance": 0,
+    "debt": 0,
+    "debt_history": [],
+    "trusted_plans": {},
+    "username": "Yekpehr",
+    "first_name": "Sepehr",
+    "last_name": null,
+    "status": "started",
+    "lang": "fa"
+  },
+  "837276259": {
+    "buy_count": 0,
+    "purchase_history": [],
+    "wallet_balance": 0,
+    "debt": 0,
+    "debt_history": [],
+    "trusted_plans": {},
+    "username": "sadra3378",
+    "first_name": "Sadra",
+    "last_name": null,
+    "status": "started",
+    "lang": "fa"
+  },
+  "225297892": {
+    "buy_count": 0,
+    "purchase_history": [],
+    "wallet_balance": 0,
+    "debt": 0,
+    "debt_history": [],
+    "trusted_plans": {},
+    "username": "alireza4h",
+    "first_name": "Alireza",
+    "last_name": null,
+    "status": "started",
+    "lang": "fa"
+  },
+  "7235746718": {
+    "buy_count": 0,
+    "purchase_history": [],
+    "wallet_balance": 0,
+    "debt": 0,
+    "debt_history": [],
+    "trusted_plans": {},
+    "username": "Emantrade",
+    "first_name": "Iman👽👽👽",
+    "last_name": null,
+    "status": "started",
+    "lang": "fa"
+  },
+  "6409216687": {
+    "buy_count": 0,
+    "purchase_history": [],
+    "wallet_balance": 0,
+    "debt": 0,
+    "debt_history": [],
+    "trusted_plans": {},
+    "username": "I_hossein99",
+    "first_name": "Your",
+    "last_name": "Ex Neighbour",
+    "status": "started",
+    "lang": "fa"
+  },
+  "6510429092": {
+    "buy_count": 0,
+    "purchase_history": [],
+    "wallet_balance": 0,
+    "debt": 0,
+    "debt_history": [],
+    "trusted_plans": {},
+    "username": "Mostafa678901",
+    "first_name": "Mostafaauo",
+    "last_name": null,
+    "status": "started",
+    "lang": "en",
+    "user_state": "waiting_for_prize_code",
+    "referrals_list": [
+      {
+        "uid": "7275573222",
+        "timestamp": 1778947242.05898
+      },
+      {
+        "uid": "1761899863",
+        "timestamp": 1779671673.0378025
+      }
+    ],
+    "ref_count": 2
+  },
+  "7275573222": {
+    "buy_count": 0,
+    "purchase_history": [],
+    "wallet_balance": 0,
+    "debt": 0,
+    "debt_history": [],
+    "trusted_plans": {},
+    "referred_by": "6510429092",
+    "lang": "en",
+    "user_state": "waiting_for_prize_code"
+  },
+  "6397923733": {
+    "buy_count": 0,
+    "purchase_history": [],
+    "wallet_balance": 0,
+    "debt": 0,
+    "debt_history": [],
+    "trusted_plans": {},
+    "username": "Mostafasta4",
+    "first_name": "Mostafaasta",
+    "last_name": null,
+    "status": "started",
+    "lang": "fa"
+  },
+  "5785060156": {
+    "buy_count": 0,
+    "purchase_history": [],
+    "wallet_balance": 0,
+    "debt": 0,
+    "debt_history": [],
+    "trusted_plans": {},
+    "username": "alirezaei65906",
+    "first_name": "moon 🌙",
+    "last_name": null,
+    "status": "started",
+    "lang": "fa"
+  },
+  "6630467658": {
+    "buy_count": 0,
+    "purchase_history": [],
+    "wallet_balance": 0,
+    "debt": 0,
+    "debt_history": [],
+    "trusted_plans": {},
+    "username": "AlecAlba",
+    "first_name": "Alec",
+    "last_name": null,
+    "status": "started",
+    "lang": "fa",
+    "pending_plan": "1gb-1month",
+    "pending_quantity": 1
+  },
+  "52852588": {
+    "buy_count": 0,
+    "purchase_history": [],
+    "wallet_balance": 0,
+    "debt": 0,
+    "debt_history": [],
+    "trusted_plans": {},
+    "username": "aminshahroti",
+    "first_name": "Amin",
+    "last_name": null,
+    "status": "started",
+    "lang": "fa"
+  },
+  "5414636369": {
+    "buy_count": 0,
+    "purchase_history": [],
+    "wallet_balance": 0,
+    "debt": 0,
+    "debt_history": [],
+    "trusted_plans": {},
+    "username": "s87654s",
+    "first_name": "🇨🇦",
+    "last_name": "S",
+    "status": "started",
+    "lang": "fa"
+  },
+  "683786381": {
+    "buy_count": 0,
+    "purchase_history": [],
+    "wallet_balance": 0,
+    "debt": 0,
+    "debt_history": [],
+    "trusted_plans": {},
+    "username": "rlym0v",
+    "first_name": "Mov's ⋆˚｡⋆",
+    "last_name": null,
+    "status": "started",
+    "lang": "fa"
+  },
+  "1156534004": {
+    "buy_count": 0,
+    "purchase_history": [],
+    "wallet_balance": 0,
+    "debt": 0,
+    "debt_history": [],
+    "trusted_plans": {},
+    "username": "H_Ashouriii007",
+    "first_name": "H.Ash0uriii0236",
+    "last_name": null,
+    "status": "started",
+    "lang": "fa"
+  },
+  "1761899863": {
+    "buy_count": 0,
+    "purchase_history": [],
+    "wallet_balance": 0,
+    "debt": 0,
+    "debt_history": [],
+    "trusted_plans": {},
+    "referred_by": "6510429092",
+    "lang": "fa"
+  },
+  "5109000707": {
+    "buy_count": 0,
+    "purchase_history": [],
+    "wallet_balance": 0,
+    "debt": 0,
+    "debt_history": [],
+    "trusted_plans": {},
+    "username": "Gemer0000VPN",
+    "first_name": "parsa",
+    "last_name": null,
+    "status": "started",
+    "lang": "fa",
+    "user_state": "waiting_for_admin_msg"
+  },
+  "76605147": {
+    "buy_count": 0,
+    "purchase_history": [],
+    "wallet_balance": 0,
+    "debt": 0,
+    "debt_history": [],
+    "trusted_plans": {},
+    "username": "Mbra1405",
+    "first_name": "Behnam",
+    "last_name": null,
+    "status": "started",
+    "lang": "fa"
+  },
+  "6210243819": {
+    "buy_count": 0,
+    "purchase_history": [],
+    "wallet_balance": 0,
+    "debt": 0,
+    "debt_history": [],
+    "trusted_plans": {},
+    "username": "Sh_ayan_HE",
+    "first_name": "ShayaN_Mobile",
+    "last_name": null,
+    "status": "started",
+    "lang": "fa"
+  },
+  "6013224655": {
+    "buy_count": 0,
+    "purchase_history": [],
+    "wallet_balance": 0,
+    "debt": 0,
+    "debt_history": [],
+    "trusted_plans": {},
+    "username": "AhmadReza9311",
+    "first_name": "𝘼𝙃𝙈𝘼𝘿𝙍𝙀𝙕𝘼",
+    "last_name": null,
+    "status": "started",
+    "lang": "fa",
+    "user_state": "waiting_for_charge_amount"
+  },
+  "6873433591": {
+    "buy_count": 0,
+    "purchase_history": [],
+    "wallet_balance": 0,
+    "debt": 0,
+    "debt_history": [],
+    "trusted_plans": {},
+    "username": null,
+    "first_name": "reza",
+    "last_name": null,
+    "status": "started",
+    "lang": "fa"
+  }
+}

@@ -3,6 +3,12 @@ plans.json
 users.json
 vless.py
 configs.py
+*.db
+*.session
+*.log
+data/
+scratch/
+wheels/
 
 # Python
 __pycache__/
@@ -14,3 +20,4 @@ venv/
 .DS_Store
 *.bak
 *.service
+

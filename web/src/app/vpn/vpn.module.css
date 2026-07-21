@@ -1,0 +1,303 @@
+.page {
+  padding: 100px 0 80px;
+  min-height: 100vh;
+  position: relative;
+}
+
+.heroGlow {
+  position: fixed;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 700px;
+  height: 400px;
+  background: radial-gradient(ellipse at center, rgba(99,102,241,0.12) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.header {
+  text-align: center;
+  margin-bottom: 56px;
+  animation: fadeUp 0.6s ease forwards;
+}
+
+.title {
+  font-size: clamp(36px, 5vw, 60px);
+  font-weight: 800;
+  letter-spacing: -0.04em;
+  margin-bottom: 16px;
+}
+
+.subtitle {
+  font-size: 17px;
+  color: var(--text-secondary);
+  max-width: 500px;
+  margin: 0 auto 12px;
+  line-height: 1.7;
+}
+
+.greeting {
+  font-size: 15px;
+  color: var(--text-muted);
+}
+.greeting strong { color: var(--accent-light); }
+
+/* Plans Grid */
+.plansGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  align-items: start;
+  animation: fadeUp 0.7s 0.1s ease both;
+}
+
+.planCard {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-xl);
+  padding: 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  position: relative;
+  transition: var(--transition);
+}
+.planCard:hover {
+  border-color: rgba(255,255,255,0.12);
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-card);
+}
+
+.featured {
+  border-color: var(--accent) !important;
+  background: rgba(99,102,241,0.05);
+  box-shadow: 0 0 40px rgba(99,102,241,0.12);
+}
+
+.featuredBadge {
+  position: absolute;
+  top: -12px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: linear-gradient(135deg, var(--accent) 0%, var(--accent-dark) 100%);
+  color: #fff;
+  font-size: 12px;
+  font-weight: 700;
+  padding: 4px 14px;
+  border-radius: 99px;
+  white-space: nowrap;
+  box-shadow: 0 4px 12px rgba(99,102,241,0.4);
+}
+
+.planHeader { text-align: center; }
+
+.planName {
+  font-size: 20px;
+  font-weight: 700;
+  margin-bottom: 12px;
+}
+
+.planPrice {
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  gap: 4px;
+  margin-bottom: 8px;
+}
+
+.priceAmount {
+  font-size: 36px;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  background: linear-gradient(135deg, var(--text-primary) 0%, var(--accent-light) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.priceCurrency {
+  font-size: 15px;
+  color: var(--text-secondary);
+  font-weight: 500;
+}
+
+.planDesc {
+  font-size: 13px;
+  color: var(--text-muted);
+  line-height: 1.5;
+}
+
+.planMeta {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.metaItem {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  color: var(--text-secondary);
+  background: rgba(255,255,255,0.04);
+  border: 1px solid var(--border);
+  border-radius: 99px;
+  padding: 4px 12px;
+}
+
+.featureList {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  flex: 1;
+}
+.featureList li {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  color: var(--text-secondary);
+}
+
+.checkIcon {
+  color: var(--green);
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+/* Contact box */
+.contactBox {
+  margin-top: 48px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  color: var(--text-secondary);
+  font-size: 15px;
+}
+
+/* Checkout */
+.checkoutWrap {
+  max-width: 900px;
+  margin: 0 auto;
+  animation: fadeUp 0.5s ease forwards;
+}
+
+.checkoutTitle {
+  font-size: 20px;
+  font-weight: 700;
+  margin-bottom: 16px;
+  letter-spacing: -0.02em;
+}
+
+.checkoutGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  align-items: start;
+}
+
+.orderSummary {}
+
+.orderPlan {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.orderPlanName { font-size: 17px; font-weight: 700; }
+.orderPrice { font-size: 18px; font-weight: 800; color: var(--accent-light); }
+
+.orderFeatures {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.orderFeatures li {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  color: var(--text-secondary);
+}
+.orderFeatures span { color: var(--green); font-weight: 700; }
+
+.paymentInfo {}
+.payLabel { font-size: 13px; font-weight: 600; color: var(--text-secondary); margin-bottom: 8px; }
+
+.cardNumber {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 10px 14px;
+  margin-bottom: 10px;
+  gap: 8px;
+}
+.cardNumber span {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 15px;
+  letter-spacing: 0.05em;
+  color: var(--accent-light);
+}
+
+.payNote { font-size: 13px; color: var(--text-muted); line-height: 1.5; }
+
+/* Receipt */
+.receiptForm { display: flex; flex-direction: column; gap: 16px; }
+
+.uploadArea { position: relative; }
+.fileInput { position: absolute; inset: 0; opacity: 0; cursor: pointer; z-index: 2; }
+
+.uploadLabel {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 32px 20px;
+  border: 2px dashed var(--border);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: var(--transition);
+  text-align: center;
+  position: relative;
+}
+.uploadLabel:hover { border-color: var(--accent); background: rgba(99,102,241,0.04); }
+
+.uploadText { font-size: 14px; font-weight: 600; color: var(--text-primary); }
+.uploadSub { font-size: 12px; color: var(--text-muted); }
+
+.contactNote { font-size: 13px; color: var(--text-muted); text-align: center; }
+
+/* Done */
+.doneCard {
+  max-width: 520px;
+  margin: 60px auto 0;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-xl);
+  padding: 56px 40px;
+  text-align: center;
+  animation: fadeUp 0.5s ease;
+}
+.doneIcon { font-size: 56px; margin-bottom: 20px; }
+.doneCard h1 { font-size: 28px; font-weight: 800; margin-bottom: 12px; }
+.doneCard p { font-size: 15px; color: var(--text-secondary); line-height: 1.7; margin-bottom: 8px; }
+.doneNote { font-size: 14px; }
+.doneNote a { color: var(--accent-light); }
+
+.emptyState { text-align: center; padding: 48px; color: var(--text-secondary); }
+
+@media (max-width: 960px) {
+  .plansGrid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 640px) {
+  .plansGrid { grid-template-columns: 1fr; }
+  .checkoutGrid { grid-template-columns: 1fr; }
+  .page { padding: 90px 0 60px; }
+}

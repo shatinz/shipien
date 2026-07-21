@@ -1,0 +1,192 @@
+.page {
+  padding: 100px 0 80px;
+  min-height: 100vh;
+  position: relative;
+}
+
+.heroGlow {
+  position: fixed;
+  top: -50px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 800px;
+  height: 400px;
+  background: radial-gradient(ellipse at center, rgba(99,102,241,0.1) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.header {
+  text-align: center;
+  padding: 40px 0 72px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  animation: fadeUp 0.6s ease forwards;
+}
+
+.title {
+  font-size: clamp(36px, 5vw, 60px);
+  font-weight: 800;
+  letter-spacing: -0.04em;
+  line-height: 1.1;
+}
+
+.subtitle {
+  font-size: 17px;
+  color: var(--text-secondary);
+  max-width: 520px;
+  line-height: 1.7;
+}
+
+/* Service rows */
+.servicesList {
+  display: flex;
+  flex-direction: column;
+  gap: 64px;
+}
+
+.serviceRow {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 48px;
+  align-items: start;
+  animation: fadeUp 0.6s ease both;
+}
+
+.reversed { direction: rtl; }
+.reversed > * { direction: ltr; }
+
+.serviceInfo { display: flex; flex-direction: column; gap: 16px; }
+
+.serviceIconWrap {
+  width: 64px;
+  height: 64px;
+  border-radius: var(--radius-lg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 32px;
+}
+.color_blue   { background: rgba(59,130,246,0.12); border: 1px solid rgba(59,130,246,0.2); }
+.color_purple { background: rgba(168,85,247,0.12); border: 1px solid rgba(168,85,247,0.2); }
+.color_cyan   { background: rgba(34,211,238,0.12); border: 1px solid rgba(34,211,238,0.2); }
+.color_green  { background: rgba(16,185,129,0.12); border: 1px solid rgba(16,185,129,0.2); }
+.color_orange { background: rgba(245,158,11,0.12); border: 1px solid rgba(245,158,11,0.2); }
+
+.serviceTagline {
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--accent-light);
+}
+
+.serviceTitle {
+  font-size: 28px;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+}
+
+.serviceDesc {
+  font-size: 15px;
+  color: var(--text-secondary);
+  line-height: 1.75;
+}
+
+.techTags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 4px;
+}
+
+.techTag {
+  font-size: 12px;
+  font-weight: 500;
+  padding: 4px 10px;
+  border-radius: 99px;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.08);
+  color: var(--text-secondary);
+}
+
+/* Capability card */
+.capabilityCard {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-xl);
+  padding: 28px;
+  backdrop-filter: blur(10px);
+}
+
+.capTitle {
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: 16px;
+}
+
+.capList {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.capList li {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  font-size: 14px;
+  color: var(--text-secondary);
+  line-height: 1.5;
+}
+
+.capDot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--accent);
+  flex-shrink: 0;
+  margin-top: 6px;
+}
+
+/* VPN Teaser */
+.vpnTeaser {
+  margin-top: 80px;
+  background: linear-gradient(135deg, rgba(99,102,241,0.1) 0%, rgba(34,211,238,0.05) 100%);
+  border: 1px solid rgba(99,102,241,0.25);
+  border-radius: var(--radius-xl);
+  padding: 40px 48px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  flex-wrap: wrap;
+}
+
+.vpnTeaserContent {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+.vpnTeaserContent h3 {
+  font-size: 22px;
+  font-weight: 700;
+  margin-bottom: 6px;
+}
+.vpnTeaserContent p {
+  font-size: 14px;
+  color: var(--text-secondary);
+  max-width: 400px;
+}
+
+@media (max-width: 900px) {
+  .serviceRow { grid-template-columns: 1fr; gap: 24px; }
+  .reversed { direction: ltr; }
+  .vpnTeaser { flex-direction: column; text-align: center; }
+  .vpnTeaserContent { flex-direction: column; text-align: center; }
+}

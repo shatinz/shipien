@@ -10,6 +10,139 @@ import io
 import requests
 import re
 import urllib.parse
+import sqlite3
+import random
+import string
+import uuid
+import subprocess
+
+def check_client_name_exists(name):
+    import sqlite3
+    db_path = "/usr/local/s-ui/db/s-ui.db"
+    if not os.path.exists(db_path):
+        return False
+    try:
+        conn = sqlite3.connect(db_path)
+        cursor = conn.cursor()
+        cursor.execute("SELECT 1 FROM clients WHERE name = ?;", (name,))
+        row = cursor.fetchone()
+        return row is not None
+    except Exception as e:
+        print(f"Error checking client name existence: {e}")
+        return False
+    finally:
+        if 'conn' in locals():
+            conn.close()
+
+def get_client_name_by_password(password):
+    import sqlite3
+    db_path = "/usr/local/s-ui/db/s-ui.db"
+    if not os.path.exists(db_path):
+        return None
+    try:
+        conn = sqlite3.connect(db_path)
+        cursor = conn.cursor()
+        cursor.execute("SELECT name, config FROM clients;")
+        rows = cursor.fetchall()
+        for name, config_bytes in rows:
+            try:
+                config_str = config_bytes.decode('utf-8')
+                config_json = json.loads(config_str)
+                for proto in config_json.values():
+                    if isinstance(proto, dict) and proto.get('password') == password:
+                        return name
+            except Exception:
+                continue
+    except Exception as e:
+        print(f"Error lookup client name: {e}")
+    finally:
+        if 'conn' in locals():
+            conn.close()
+    return None
+
+def add_sui_client(remark, expiry_days, volume_gb, custom_name=None):
+    import requests
+    
+    name = custom_name if custom_name else "".join(random.choices(string.ascii_letters + string.digits, k=8))
+    password = "".join(random.choices(string.ascii_letters + string.digits, k=10))
+    client_uuid = str(uuid.uuid4())
+    
+    config_dict = {
+        "anytls": {"name": name, "password": password},
+        "http": {"password": password, "username": name},
+        "hysteria": {"auth_str": password, "name": name},
+        "hysteria2": {"name": name, "password": password},
+        "mixed": {"password": password, "username": name},
+        "naive": {"password": password, "username": name},
+        "shadowsocks": {"name": name, "password": "1IIJASI1IVtdx7bPMGyMOzIyS+VBVBFCi60mRtapX/Q="},
+        "shadowsocks16": {"name": name, "password": "z09seDSz4la2sJV/hskfjw=="},
+        "shadowtls": {"name": name, "password": "1IIJASI1IVtdx7bPMGyMOzIyS+VBVBFCi60mRtapX/Q="},
+        "socks": {"password": password, "username": name},
+        "trojan": {"name": name, "password": password},
+        "tuic": {"name": name, "password": password, "uuid": client_uuid},
+        "vless": {"flow": "xtls-rprx-vision", "name": name, "uuid": client_uuid},
+        "vmess": {"alterId": 0, "name": name, "uuid": client_uuid}
+    }
+    
+    volume_bytes = int(volume_gb * 1024 * 1024 * 1024) if volume_gb > 0 else 0
+    expiry_ts = int(time.time() + expiry_days * 86400) if expiry_days > 0 else 0
+    
+    client_data = {
+        "id": 0,
+        "enable": True,
+        "name": name,
+        "inbounds": [1],
+        "config": config_dict,
+        "links": [],
+        "volume": volume_bytes,
+        "expiry": expiry_ts,
+        "desc": remark,
+        "group": "",
+        "remark": remark
+    }
+    
+    base_url = "http://h2.morningislighting.ir:2095/app/apiv2"
+    token = "shipien_bot_token_2026"
+    headers = {
+        "Token": token
+    }
+    params = {
+        "object": "clients",
+        "action": "new",
+        "data": json.dumps(client_data)
+    }
+    
+    try:
+        r = requests.post(f"{base_url}/save", params=params, headers=headers, timeout=10)
+        r.raise_for_status()
+        res = r.json()
+        if not res.get("success"):
+            raise Exception(res.get("msg", "Unknown API error"))
+    except Exception as e:
+        print(f"Error calling S-UI API: {e}")
+        raise e
+        
+    db_path = "/usr/local/s-ui/db/s-ui.db"
+    conn = sqlite3.connect(db_path)
+    cursor = conn.cursor()
+    try:
+        cursor.execute("SELECT links FROM clients WHERE name = ?", (name,))
+        row = cursor.fetchone()
+        if not row or not row[0]:
+            raise Exception(f"Client {name} links not found in database after API save")
+        
+        # links column is BLOB / bytes in sqlite3, decode and parse as JSON
+        links_data = json.loads(row[0].decode('utf-8'))
+        if not links_data or not isinstance(links_data, list):
+            raise Exception("Invalid links format in database")
+            
+        link_uri = links_data[0].get("uri")
+        if not link_uri:
+            raise Exception("No URI found in the generated links")
+            
+        return link_uri
+    finally:
+        conn.close()
 
 BALE_TOKEN = "1307415301:iJ-ljBTWFwmzn8Eef0CiexHZo_KityNu_54"
 
@@ -48,7 +181,7 @@ LANGS = {
         'view_tiers': '📁 Available Tiers',
         'my_info': '👤 My Profile',
         'contact_admin': '📬 Contact Support',
-        'my_purchases': '🧾 My Purchases',
+        'my_purchases': '📦 My Services',
         'history_header': "🧾 *Your Purchase History*\n\n",
         'no_purchases': "⚠️ You haven't purchased any plans yet.",
         'msg_to_admin_prompt': '📝 *Send Message*\nPlease type your message for the support team:',
@@ -76,9 +209,9 @@ LANGS = {
         'prize_already_used': '⚠️ *Already Used*\nYou have already used this prize code.',
         'admin_prize_added': '✅ *Prize Code Created*\nCode: `{code}`\nAmount: `{amount}`\nDuration: `{hours}`h\nMax Uses: `{limit}`',
         'connect_guide': "📚 *How to Connect*\n\nChoose your device type to see the guide:",
-        'guide_ios': "🍏 *iOS Guide*\n1. Download 'V2Box' or 'Streisand' from App Store.\n2. Copy the VPN link sent by the bot.\n3. Open the app and 'Add Config from Clipboard'.\n4. Connect and enjoy!",
-        'guide_android': "🤖 *Android Guide*\n1. Download 'v2rayNG' from Play Store.\n2. Copy the VPN link.\n3. Open v2rayNG -> '+' -> 'Import config from Clipboard'.\n4. Tap the config and hit the connect button.",
-        'guide_pc': "💻 *PC/Windows Guide*\n1. Download 'v2rayN' from GitHub.\n2. Copy the VPN link.\n3. Open v2rayN -> 'Servers' -> 'Import bulk URL from clipboard'.\n4. Right-click the icon in tray -> System Proxy -> Set system proxy.",
+        'guide_ios': "🍏 *iOS Guide (iPhone)*\n1. Install Karing from App Store.\nApp Store (Karing): https://apps.apple.com/us/app/karing/id6472431552\n2. Copy the sing-box JSON Subscription Link sent by the bot.\n3. Open Karing ➔ Profiles ➔ Add Profile (Import from Link/Clipboard) and Connect.",
+        'guide_android': "🤖 *Android Guide*\n1. Install sing-box from Play Store.\nPlay Store: https://play.google.com/store/apps/details?id=io.nekohasekai.sfa\nDirect APK: https://github.com/SagerNet/sing-box/releases\n2. Copy the sing-box JSON Subscription Link.\n3. Open sing-box ➔ Profiles ➔ Import Profile ➔ Paste and Connect.",
+        'guide_pc': "💻 *Desktop Guide (Windows/Mac)*\n1. Download sing-box client: https://github.com/SagerNet/sing-box/releases\n2. Import the JSON config and connect.",
         'upload_bale': '☁️ Upload to Bale',
         'bale_id_prompt': '🆔 To get your Bale Chat ID, send any message to @teldownloadbot on Bale app.\n\nThen, paste your *Bale Chat ID* here:',
         'bale_media_prompt': '📁 Great! Now send the *Photo, Music, or File* you want to upload to Bale:',
@@ -134,7 +267,7 @@ LANGS = {
         'view_tiers': '📁 مشاهده سرویس‌ها',
         'my_info': '👤 پروفایل من',
         'contact_admin': '📬 پشتیبانی آنلاین',
-        'my_purchases': '🧾 خریدهای من',
+        'my_purchases': '📦 سرویس‌های من',
         'history_header': "🧾 *تاریخچه خرید شما*\n\n",
         'no_purchases': "⚠️ شما هنوز خریدی نداشته‌اید.",
         'msg_to_admin_prompt': '📝 *ارسال پیام*\nلطفا پیام خود را برای تیم پشتیبانی بنویسید:',
@@ -163,9 +296,9 @@ LANGS = {
         'admin_prize_added': '✅ *کد هدیه ساخته شد*\nکد: `{code}`\nمبلغ: `{amount}`\nزمان: `{hours}` ساعت\nظرفیت: `{limit}` نفر',
 
         'connect_guide': "📚 *راهنمای اتصال*\n\nدستگاه خود را انتخاب کنید:",
-        'guide_ios': "🍏 *راهنمای iOS*\n۱. اپلیکیشن 'V2Box' یا 'Streisand' را از اپ استور دانلود کنید.\n۲. لینک VPN ارسالی توسط ربات را کپی کنید.\n۳. وارد برنامه شوید و گزینه 'Add Config from Clipboard' را بزنید.\n۴. متصل شوید.",
-        'guide_android': "🤖 *راهنمای اندروید*\n۱. اپلیکیشن 'v2rayNG' را از گوگل پلی دانلود کنید.\n۲. لینک VPN را کپی کنید.\n۳. وارد برنامه شوید -> علامت '+' -> 'Import config from Clipboard'.\n۴. روی کانفیگ کلیک کرده و دکمه اتصال را بزنید.",
-        'guide_pc': "💻 *راهنمای ویندوز*\n۱. برنامه 'v2rayN' را دانلود کنید.\n۲. لینک را کپی کنید.\n۳. در برنامه -> 'Servers' -> 'Import bulk URL from clipboard'.\n۴. روی آیکون برنامه در تسک‌بار راست کلیک کنید -> System Proxy -> Set system proxy.",
+        'guide_ios': "🍏 *راهنمای iOS (آیفون)*\n۱. برنامه Karing را از اپ استور دانلود کنید:\nلینک اپ استور (Karing): https://apps.apple.com/us/app/karing/id6472431552\n۲. لینک اشتراک JSON فرستاده شده را کپی کنید.\n۳. وارد برنامه شوید ➔ بخش Profiles ➔ گزینه Add Profile (وارد کردن از کلیپ‌بورد/لینک) را انتخاب کرده و متصل شوید.",
+        'guide_android': "🤖 *راهنمای اندروید*\n۱. برنامه sing-box را دانلود و نصب کنید:\nلینک گوگل پلی: https://play.google.com/store/apps/details?id=io.nekohasekai.sfa\nدانلود مستقیم APK: https://github.com/SagerNet/sing-box/releases\n۲. لینک اشتراک JSON را کپی کنید.\n۳. وارد برنامه شوید ➔ بخش Profiles ➔ گزینه Import Profile ➔ لینک را وارد کرده و متصل شوید.",
+        'guide_pc': "💻 *راهنمای ویندوز و مک*\n۱. کلاینت دسکتاپ sing-box را دانلود کنید: https://github.com/SagerNet/sing-box/releases\n۲. لینک اشتراک JSON را وارد کرده و متصل شوید.",
         'upload_bale': '☁️ آپلود در بله',
         'bale_id_prompt': '🆔 برای دریافت شناسه خود، هر پیامی را به @teldownloadbot در برنامه بله ارسال کنید.\n\nسپس *شناسه چت (Bale Chat ID)* خود را اینجا بفرستید:',
         'bale_media_prompt': '📁 بسیار عالی! حالا *عکس، موسیقی یا فایل* خود را برای آپلود در بله ارسال کنید:',
@@ -294,26 +427,152 @@ def escape_md(text):
     if not text: return ""
     return str(text).replace('_', '\\_').replace('*', '\\*').replace('`', '\\`').replace('[', '\\[')
 
+def parse_anytls_link(link):
+    try:
+        raw = link.replace("anytls://", "")
+        auth_host, query_frag = raw.split("?", 1) if "?" in raw else (raw, "")
+        auth, host_port = auth_host.split("@")
+        password = auth
+        server, port_str = host_port.split(":")
+        port = int(port_str)
+        
+        sni = server
+        node_tag = "anytls-node"
+        if query_frag:
+            query, fragment = query_frag.split("#", 1) if "#" in query_frag else (query_frag, "")
+            if fragment:
+                node_tag = urllib.parse.unquote(fragment)
+            for param in query.split("&"):
+                if "=" in param:
+                    k, v = param.split("=")
+                    if k == "sni":
+                        sni = urllib.parse.unquote(v)
+        return password, server, port, sni, node_tag
+    except Exception as e:
+        print(f"Error parsing anytls link: {e}")
+        return None
+
+def generate_singbox_json(password, server, port, sni, node_tag="anytls-node"):
+    config = {
+        "inbounds": [
+            {
+                "type": "tun",
+                "address": [
+                    "172.19.0.1/30",
+                    "fdfe:dcba:9876::1/126"
+                ],
+                "auto_route": True,
+                "endpoint_independent_nat": False,
+                "mtu": 9000,
+                "platform": {
+                    "http_proxy": {
+                        "enabled": True,
+                        "server": "127.0.0.1",
+                        "server_port": 2080
+                    }
+                },
+                "stack": "system",
+                "strict_route": False
+            },
+            {
+                "type": "mixed",
+                "listen": "127.0.0.1",
+                "listen_port": 2080,
+                "users": []
+            }
+        ],
+        "outbounds": [
+            {
+                "type": "selector",
+                "tag": "proxy",
+                "outbounds": [
+                    "auto",
+                    "direct",
+                    node_tag
+                ]
+            },
+            {
+                "type": "urltest",
+                "tag": "auto",
+                "outbounds": [
+                    node_tag
+                ],
+                "url": "http://www.gstatic.com/generate_204",
+                "interval": "10m",
+                "tolerance": 50
+            },
+            {
+                "type": "direct",
+                "tag": "direct"
+            },
+            {
+                "type": "anytls",
+                "tag": node_tag,
+                "server": server,
+                "server_port": port,
+                "password": password,
+                "tls": {
+                    "enabled": True,
+                    "server_name": sni
+                }
+            }
+        ],
+        "route": {
+            "auto_detect_interface": True,
+            "final": "proxy",
+            "rules": [
+                {
+                    "action": "sniff"
+                },
+                {
+                    "action": "route",
+                    "clash_mode": "Direct",
+                    "outbound": "direct"
+                },
+                {
+                    "action": "route",
+                    "clash_mode": "Global",
+                    "outbound": "proxy"
+                }
+            ]
+        }
+    }
+    return json.dumps(config, indent=2)
+
 def send_config_with_qr(user_id, link, lang, plan_name="VPN Plan"):
     try:
-        bot_info = bot.get_me()
-        bot_username = bot_info.username
+        import base64
+        b64_link = base64.b64encode(link.encode('utf-8')).decode('utf-8')
+        
+        parsed = parse_anytls_link(link)
+        client_name = None
+        if parsed:
+            password, server, port, sni, node_tag = parsed
+            client_name = get_client_name_by_password(password)
 
-        # Prepare email body
-        instructions = LANGS[lang]['guide_android'].replace("*", "").replace("🤖 Android Guide", "").strip()
-        email_body = f"VPN Plan: {plan_name}\n\nConfig Link:\n{link}\n\nInstructions:\n{instructions}\n\nBot: @{bot_username}"
-        encoded_body = urllib.parse.quote(email_body)
-        encoded_subject = urllib.parse.quote(f"VPN Config - {plan_name}")
-        gmail_url = f"https://mail.google.com/mail/?view=cm&fs=1&to=&su={encoded_subject}&body={encoded_body}"
-        mailto_url = f"mailto:?subject={encoded_subject}&body={encoded_body}"
+        if client_name:
+            b64_sub_url = f"http://h2.morningislighting.ir:2096/sub/{client_name}"
+            json_sub_url = f"http://h2.morningislighting.ir:2096/sub/{client_name}?format=json"
+            clash_sub_url = f"http://h2.morningislighting.ir:2096/sub/{client_name}?format=clash"
+        else:
+            b64_sub_url = f"https://shipien-web.vercel.app/api/vpn/config/direct/sub?c={b64_link}"
+            json_sub_url = f"https://shipien-web.vercel.app/api/vpn/config/direct?c={b64_link}"
+            clash_sub_url = ""
 
-        markup = types.InlineKeyboardMarkup(row_width=1)
+        markup = types.InlineKeyboardMarkup(row_width=2)
         markup.add(
-            types.InlineKeyboardButton(LANGS[lang]['gmail_btn'], url=gmail_url)
+            types.InlineKeyboardButton("🍏 iOS (Karing)", url="https://apps.apple.com/us/app/karing/id6472431552"),
+            types.InlineKeyboardButton("🤖 Android (Play Store)", url="https://play.google.com/store/apps/details?id=io.nekohasekai.sfa")
         )
+        markup.add(
+            types.InlineKeyboardButton("📋 Base64 Subscription", url=b64_sub_url),
+            types.InlineKeyboardButton("🌐 JSON Subscription", url=json_sub_url)
+        )
+        if clash_sub_url:
+            markup.add(types.InlineKeyboardButton("⚡ Clash Subscription", url=clash_sub_url))
 
         qr = qrcode.QRCode(version=1, box_size=10, border=5)
-        qr.add_data(link)
+        qr.add_data(json_sub_url)
         qr.make(fit=True)
         img = qr.make_image(fill_color="black", back_color="white")
 
@@ -322,8 +581,59 @@ def send_config_with_qr(user_id, link, lang, plan_name="VPN Plan"):
         img.save(bio, 'PNG')
         bio.seek(0)
 
-        caption = f"*{plan_name}*\n\n{LANGS[lang]['link_sent']}\n\n`{link}`"
+        json_str = None
+        if client_name:
+            try:
+                headers = {'Host': 'h2.morningislighting.ir'}
+                r = requests.get(f'http://127.0.0.1:2096/sub/{client_name}?format=json', headers=headers, timeout=5)
+                if r.status_code == 200:
+                    raw_json = r.json()
+                    if 'outbounds' in raw_json:
+                        for out in raw_json['outbounds']:
+                            if out.get('server') in ['136.244.111.62', '108.61.198.98']:
+                                out['server'] = 'h2.morningislighting.ir'
+                    json_str = json.dumps(raw_json, indent=2)
+            except Exception as e:
+                print(f"Error fetching raw config from panel: {e}")
+
+        if not json_str and parsed:
+            password, server, port, sni, node_tag = parsed
+            json_str = generate_singbox_json(password, server, port, sni, node_tag)
+
+        if lang == 'fa':
+            caption = (
+                f"🎉 *سرویس {plan_name} شما آماده است!*\n\n"
+                f"🔗 *لینک اتصال مستقیم (anytls):*\n`{link}`\n\n"
+                f"📋 *لینک اشتراک Base64 (مخصوص Karing و V2Ray):*\n`{b64_sub_url}`\n\n"
+                f"🌐 *لینک اشتراک JSON (مخصوص sing-box):*\n`{json_sub_url}`\n"
+            )
+            if clash_sub_url:
+                caption += f"⚡ *لینک اشتراک Clash (مخصوص Clash/Karing):*\n`{clash_sub_url}`\n"
+            caption += (
+                f"\n📱 *کد QR جهت ایمپورت مستقیم در برنامه ایجاد شده است.*\n\n"
+                f"📁 *فایل پیکربندی JSON (مخصوص Karing و sing-box) به این پیام پیوست شد.*"
+            )
+        else:
+            caption = (
+                f"🎉 *Your {plan_name} is ready!*\n\n"
+                f"🔗 *anytls Connection Link:*\n`{link}`\n\n"
+                f"📋 *Base64 Subscription Link (for Karing/V2Ray):*\n`{b64_sub_url}`\n\n"
+                f"🌐 *JSON Subscription Link (for sing-box):*\n`{json_sub_url}`\n"
+            )
+            if clash_sub_url:
+                caption += f"⚡ *Clash Subscription Link (for Clash/Karing):*\n`{clash_sub_url}`\n"
+            caption += (
+                f"\n📱 *The QR Code is for importing directly into the client.*\n\n"
+                f"📁 *The JSON Config File (for Karing/sing-box) is attached to this message.*"
+            )
+
         bot.send_photo(user_id, bio, caption=caption, parse_mode='Markdown', reply_markup=markup)
+        
+        if json_str:
+            file_bio = io.BytesIO(json_str.encode('utf-8'))
+            file_bio.name = f"{client_name or 'config'}.json"
+            bot.send_document(user_id, file_bio, caption=f"📄 {client_name or 'config'}.json ({plan_name})")
+            
     except Exception as e:
         print(f"Error sending QR: {e}")
         bot.send_message(user_id, f"*{plan_name}*\n\n{LANGS[lang]['link_sent']}\n\n`{link}`", parse_mode='Markdown')
@@ -365,6 +675,11 @@ def send_backups(bot, chat_id):
         if os.path.exists(PRIZE_CODES_FILE):
             with open(PRIZE_CODES_FILE, 'rb') as f:
                 bot.send_document(chat_id, f, caption="📂 *Prize Codes Database Backup* (JSON)", parse_mode='Markdown')
+        
+        sui_db_path = "/usr/local/s-ui/db/s-ui.db"
+        if os.path.exists(sui_db_path):
+            with open(sui_db_path, 'rb') as f:
+                bot.send_document(chat_id, f, caption="📂 *s-ui Database Backup* (SQLite)", parse_mode='Markdown')
     except Exception as e:
         print(f"Error sending backups: {e}")
 
@@ -449,6 +764,9 @@ def save_prize_codes():
 def get_main_menu(user_id):
     lang = get_user_lang(user_id)
     markup = types.ReplyKeyboardMarkup(resize_keyboard=True, row_width=2)
+    markup.add(
+        types.KeyboardButton("🌐 Open Web App", web_app=types.WebAppInfo(url="https://shipien-web.vercel.app/dashboard"))
+    )
     markup.add(
         types.KeyboardButton(LANGS[lang]['show_plans']),
         types.KeyboardButton(LANGS[lang]['view_tiers'])
@@ -736,20 +1054,21 @@ def admin_send_bulk(message):
             bot.reply_to(message, f"Plan `{escape_md(plan_key)}` not found.")
             return
         
-        available_links = plans_data[plan_key].get('links', [])
-        if len(available_links) < count:
-            bot.reply_to(message, f"Not enough links! Only {len(available_links)} left.")
-            return
-        
         target_lang = get_user_lang(target_uid)
         plan_name = plans_data[plan_key]['name'].get(target_lang, plans_data[plan_key]['name']['en'])
+        expiry_days = plans_data[plan_key].get('expiry_days', 30)
+        volume_gb = plans_data[plan_key].get('volume_gb', 0)
+        
         sent_count = 0
-        for _ in range(count):
-            link = plans_data[plan_key]['links'].pop(0)
-            send_config_with_qr(target_uid, link, target_lang, plan_name=plan_name)
-            sent_count += 1
-            
-        save_all_plans()
+        for i in range(count):
+            remark = f"admin-gift-{target_uid}-{i+1}"
+            try:
+                link = add_sui_client(remark, expiry_days, volume_gb)
+                if link:
+                    send_config_with_qr(target_uid, link, target_lang, plan_name=plan_name)
+                    sent_count += 1
+            except Exception as e:
+                print(f"Error creating client: {e}")
         bot.reply_to(message, f"✅ Successfully sent {sent_count} links to `{escape_md(target_username)}`.")
         bot.send_message(target_uid, f"🎁 Admin has sent you {sent_count} VPN config(s)!")
         
@@ -1290,15 +1609,12 @@ def select_tier_callback(call):
     for plan_key in tier_info.get('plans', []):
         if plan_key in plans_data:
             data = plans_data[plan_key]
-            links_count = len(data.get('links', []))
+            links_count = 999
             
             name = data['name'].get(lang, data['name']['en'])
             price = data['price'].get(lang, data['price']['en'])
             
             label = f"{name} - {price}"
-            if links_count == 0:
-                label += " (Out of Stock)"
-                
             markup.add(types.InlineKeyboardButton(label, callback_data=f"select_plan_{plan_key}"))
     
     markup.add(types.InlineKeyboardButton(LANGS[lang]['back'], callback_data="back_to_tiers"))
@@ -1319,8 +1635,8 @@ def back_to_tiers_callback(call):
     bot.edit_message_text(LANGS[lang]['plans'], call.message.chat.id, call.message.message_id, reply_markup=markup)
     bot.answer_callback_query(call.id)
 
-@bot.message_handler(func=lambda m: m.text in [LANGS['en']['my_purchases'], LANGS['fa']['my_purchases']])
-def show_my_purchases(message):
+@bot.message_handler(func=lambda m: m.text in [LANGS['en']['my_purchases'], LANGS['fa']['my_purchases']] or m.text == '/my_services')
+def show_my_services(message):
     user_id = str(message.chat.id)
     lang = get_user_lang(user_id)
     
@@ -1334,33 +1650,50 @@ def show_my_purchases(message):
         bot.send_message(user_id, LANGS[lang]['no_purchases'], parse_mode='Markdown')
         return
 
-    bot.send_message(user_id, LANGS[lang]['history_header'], parse_mode='Markdown')
+    markup = types.InlineKeyboardMarkup(row_width=1)
     
-    # Send each purchase as a separate message with share buttons
-    for item in history:
+    header = (
+        "📦 *سرویس‌های فعال شما:*\n\n"
+        "یکی از سرویس‌های خود را از لیست زیر انتخاب کنید تا مشخصات اتصال، لینک‌های اشتراک و فایل کانفیگ مربوطه را دریافت کنید:"
+        if lang == 'fa' else
+        "📦 *Your Active Services:*\n\n"
+        "Select one of your services below to retrieve its connection links, subscription URLs, and configuration file:"
+    )
+
+    for idx, item in enumerate(history):
         plan_key = item['plan_key']
         plan_name = plans_data.get(plan_key, {}).get('name', {}).get(lang, plan_key)
         date = time.strftime('%Y-%m-%d', time.localtime(item['timestamp']))
         
-        for link in item['links']:
-            # Create share buttons for each link
-            bot_info = bot.get_me()
-            bot_username = bot_info.username
-            instructions = LANGS[lang]['guide_android'].replace("*", "").replace("🤖 Android Guide", "").strip()
-            email_body = f"VPN Plan: {plan_name}\n\nConfig Link:\n{link}\n\nInstructions:\n{instructions}\n\nBot: @{bot_username}"
-            encoded_body = urllib.parse.quote(email_body)
-            encoded_subject = urllib.parse.quote(f"VPN Config - {plan_name}")
+        btn_label = f"📅 {date} — {plan_name}"
+        markup.add(types.InlineKeyboardButton(btn_label, callback_data=f"get_my_config_{idx}"))
+
+    bot.send_message(user_id, header, parse_mode='Markdown', reply_markup=markup)
+
+@bot.callback_query_handler(func=lambda call: call.data.startswith('get_my_config_'))
+def handle_get_my_config(call):
+    if not check_sub_callback(call): return
+    user_id = str(call.message.chat.id)
+    lang = get_user_lang(user_id)
+    
+    try:
+        idx = int(call.data.replace('get_my_config_', ''))
+        history = users.get(user_id, {}).get('purchase_history', [])
+        
+        if 0 <= idx < len(history):
+            item = history[idx]
+            plan_key = item['plan_key']
+            plan_name = plans_data.get(plan_key, {}).get('name', {}).get(lang, plan_key)
             
-            gmail_url = f"https://mail.google.com/mail/?view=cm&fs=1&to=&su={encoded_subject}&body={encoded_body}"
+            bot.answer_callback_query(call.id, "Sending configuration..." if lang=='en' else "در حال ارسال کانفیگ...")
             
-            markup = types.InlineKeyboardMarkup(row_width=1)
-            markup.add(
-                types.InlineKeyboardButton(LANGS[lang]['gmail_btn'], url=gmail_url)
-            )
-            
-            msg_text = f"📅 *{date}* — {plan_name}:\n`{link}`"
-            bot.send_message(user_id, msg_text, parse_mode='Markdown', reply_markup=markup)
-            time.sleep(0.05)
+            for link in item['links']:
+                send_config_with_qr(user_id, link, lang, plan_name=plan_name)
+        else:
+            bot.answer_callback_query(call.id, "Service not found." if lang=='en' else "سرویس پیدا نشد.")
+    except Exception as e:
+        print(f"Error in handle_get_my_config: {e}")
+        bot.answer_callback_query(call.id, "Error occurred." if lang=='en' else "خطایی رخ داد.")
 
 @bot.message_handler(func=lambda m: m.text in [LANGS['en']['my_info'], LANGS['fa']['my_info']])
 def show_my_info(message):
@@ -1502,6 +1835,75 @@ def handle_all_messages(message):
     # Check subscription (except admin)
     if user_id != str(ADMIN_ID) and not is_subscribed(user_id):
         bot.send_message(user_id, LANGS[lang]['join_channel_prompt'].format(channel=CHANNEL_ID), reply_markup=get_join_markup(lang))
+        return
+
+    if state == 'waiting_for_trial_name':
+        if not message.text: return
+        chosen_name = message.text.strip().lower()
+        if not re.match(r'^[a-z0-9]{3,15}$', chosen_name):
+            bot.send_message(user_id, "❌ نام وارد شده نامعتبر است. فقط حروف انگلیسی و اعداد بین ۳ تا ۱۵ کاراکتر مجاز است." if lang=='fa' else "❌ Invalid name. Only alphanumeric English characters (3-15 chars) are allowed.")
+            return
+        if check_client_name_exists(chosen_name):
+            bot.send_message(user_id, "❌ این نام قبلاً توسط کاربر دیگری انتخاب شده است. لطفاً نام دیگری ارسال کنید:" if lang=='fa' else "❌ This name already exists. Please choose a different name:")
+            return
+            
+        update_user(user_id, user_state=None, trial_used=True, status='approved', last_plan=plan_key)
+        
+        plan_info = plans_data[plan_key]
+        expiry_days = plan_info.get('expiry_days', 1)
+        volume_gb = plan_info.get('volume_gb', 1)
+        remark = f"trial-{user_id}"
+        
+        try:
+            link = add_sui_client(remark, expiry_days, volume_gb, custom_name=chosen_name)
+            add_purchase_to_history(user_id, plan_key, [link])
+            plan_name = plan_info['name'].get(lang, plan_info['name']['en'])
+            send_config_with_qr(user_id, link, lang, plan_name=plan_name)
+        except Exception as e:
+            print(f"Error creating trial client: {e}")
+            bot.send_message(user_id, "⚠️ Error creating trial link.")
+        return
+
+    if state == 'waiting_for_purchase_name':
+        if not message.text: return
+        chosen_name = message.text.strip().lower()
+        if not re.match(r'^[a-z0-9]{3,15}$', chosen_name):
+            bot.send_message(user_id, "❌ نام وارد شده نامعتبر است. فقط حروف انگلیسی و اعداد بین ۳ تا ۱۵ کاراکتر مجاز است." if lang=='fa' else "❌ Invalid name. Only alphanumeric English characters (3-15 chars) are allowed.")
+            return
+        if check_client_name_exists(chosen_name):
+            bot.send_message(user_id, "❌ این نام قبلاً توسط کاربر دیگری انتخاب شده است. لطفاً نام دیگری ارسال کنید:" if lang=='fa' else "❌ This name already exists. Please choose a different name:")
+            return
+            
+        receipt_data = u.get('pending_receipt_data')
+        receipt_type = u.get('pending_receipt_type')
+        qty = u.get('pending_quantity', 1)
+        
+        update_user(user_id, user_state=None, pending_config_name=chosen_name, status='pending_approval')
+        
+        user_type = u.get('user_type', 'new')
+        markup = types.InlineKeyboardMarkup()
+        
+        if plan_key.startswith('charge_wallet_'):
+            amount = plan_key.replace('charge_wallet_', '')
+            caption = f"💰 *Wallet Charge Receipt*\nUser: `{user_id}`\nAmount: `{amount}`\nUsername: @{message.from_user.username or '-'}"
+            markup.add(types.InlineKeyboardButton(f"✅ Approve Charge", callback_data=f"admin_approve_{user_id}_{plan_key}"))
+        else:
+            plan_info = plans_data.get(plan_key)
+            if not plan_info: return
+            caption = f"💰 *Payment Receipt*\nUser: `{user_id}`\nType: `{user_type}`\nQty: `{qty}`\nUsername: @{message.from_user.username or '-'}\nPlan: {plan_info['name']['en']}\nDesired Config Name: `{chosen_name}`"
+            markup.add(types.InlineKeyboardButton(f"✅ Approve & Send", callback_data=f"admin_approve_{user_id}_{plan_key}_0"))
+
+        if user_type == 'new':
+            markup.add(types.InlineKeyboardButton("⭐ Promote + Card Access", callback_data=f"admin_promote_{user_id}"))
+
+        markup.add(types.InlineKeyboardButton("❌ Reject", callback_data=f"admin_reject_{user_id}"))
+
+        if receipt_type == 'photo':
+            bot.send_photo(ADMIN_ID, receipt_data, caption=caption, reply_markup=markup, parse_mode='Markdown')
+        else:
+            bot.send_message(ADMIN_ID, caption + f"\n\nText: {receipt_data}", reply_markup=markup, parse_mode='Markdown')
+
+        bot.send_message(user_id, LANGS[lang]['receipt_received'])
         return
 
     # Handle Prize Codes
@@ -1797,34 +2199,35 @@ def handle_all_messages(message):
         return
 
     if plan_key and (message.content_type == 'photo' or (message.text and not message.text.startswith('/'))):
-        user_type = u.get('user_type', 'new')
-        qty = u.get('pending_quantity', 1)
-        markup = types.InlineKeyboardMarkup()
-
+        receipt_data = message.photo[-1].file_id if message.content_type == 'photo' else message.text
+        receipt_type = 'photo' if message.content_type == 'photo' else 'text'
+        
+        # If wallet charge, we don't ask for a config name
         if plan_key.startswith('charge_wallet_'):
+            update_user(user_id, status='pending_approval')
+            markup = types.InlineKeyboardMarkup()
             amount = plan_key.replace('charge_wallet_', '')
             caption = f"💰 *Wallet Charge Receipt*\nUser: `{user_id}`\nAmount: `{amount}`\nUsername: @{message.from_user.username or '-'}"
             markup.add(types.InlineKeyboardButton(f"✅ Approve Charge", callback_data=f"admin_approve_{user_id}_{plan_key}"))
-        else:
-            plan_info = plans_data.get(plan_key)
-            if not plan_info: return
-            caption = f"💰 *Payment Receipt*\nUser: `{user_id}`\nType: `{user_type}`\nQty: `{qty}`\nUsername: @{message.from_user.username or '-'}\nPlan: {plan_info['name']['en']}"
-            links = plan_info.get('links', [])
-            for i in range(min(5, len(links))):
-                markup.add(types.InlineKeyboardButton(f"✅ Approve #{i+1}", callback_data=f"admin_approve_{user_id}_{plan_key}_{i}"))
-
-        if user_type == 'new':
-            markup.add(types.InlineKeyboardButton("⭐ Promote + Card Access", callback_data=f"admin_promote_{user_id}"))
-
-        markup.add(types.InlineKeyboardButton("❌ Reject", callback_data=f"admin_reject_{user_id}"))
-
-        if message.content_type == 'photo':
-            bot.send_photo(ADMIN_ID, message.photo[-1].file_id, caption=caption, reply_markup=markup, parse_mode='Markdown')
-        else:
-            bot.send_message(ADMIN_ID, caption + f"\n\nText: {message.text}", reply_markup=markup, parse_mode='Markdown')
-
-        bot.send_message(user_id, LANGS[lang]['receipt_received'])
-        update_user(user_id, status='pending_approval')
+            markup.add(types.InlineKeyboardButton("❌ Reject", callback_data=f"admin_reject_{user_id}"))
+            
+            if receipt_type == 'photo':
+                bot.send_photo(ADMIN_ID, receipt_data, caption=caption, reply_markup=markup, parse_mode='Markdown')
+            else:
+                bot.send_message(ADMIN_ID, caption + f"\n\nText: {receipt_data}", reply_markup=markup, parse_mode='Markdown')
+                
+            bot.send_message(user_id, LANGS[lang]['receipt_received'])
+            return
+            
+        update_user(user_id, 
+                    user_state='waiting_for_purchase_name', 
+                    pending_receipt_data=receipt_data, 
+                    pending_receipt_type=receipt_type)
+                    
+        bot.send_message(user_id, 
+                         "✏️ *نام کانفیگ خود را وارد کنید:*\n\nلطفاً یک نام دلخواه به انگلیسی بین ۳ تا ۱۵ حرف/عدد وارد کنید (مثال: `myvpn`):" if lang=='fa' else 
+                         "✏️ *Enter configuration name:*\n\nPlease enter an English name between 3 and 15 characters/digits (e.g. `myvpn`):", 
+                         parse_mode='Markdown')
         return
 @bot.callback_query_handler(func=lambda call: call.data.startswith('select_plan_'))
 def select_plan_callback(call):
@@ -1835,39 +2238,25 @@ def select_plan_callback(call):
     
     if plan_key not in plans_data: return
     plan_info = plans_data[plan_key]
-    links = plan_info.get('links', [])
-    
-    if not links:
-        bot.answer_callback_query(call.id, LANGS[lang]['no_links'], show_alert=True)
-        return
     
     if plan_info.get('is_trial'):
         if users.get(user_id, {}).get('trial_used'):
             bot.answer_callback_query(call.id, LANGS[lang]['already_trial'], show_alert=True)
             return
         
-        link = links.pop(0)
-        save_all_plans()
-        update_user(user_id, trial_used=True, status='approved', last_plan=plan_key)
-        add_purchase_to_history(user_id, plan_key, [link])
-        
-        plan_name = plan_info['name'].get(lang, plan_info['name']['en'])
-        send_config_with_qr(user_id, link, lang, plan_name=plan_name)
-        bot.answer_callback_query(call.id, "Trial link sent!")
+        update_user(user_id, user_state='waiting_for_trial_name', pending_plan=plan_key)
+        bot.send_message(user_id, "✏️ *نام کانفیگ تستی خود را وارد کنید:*\n\nلطفاً یک نام دلخواه به انگلیسی بین ۳ تا ۱۵ حرف/عدد وارد کنید (مثال: `testali`):" if lang=='fa' else "✏️ *Enter configuration name:*\n\nPlease enter an English name between 3 and 15 characters/digits (e.g. `testali`):", parse_mode='Markdown')
+        bot.answer_callback_query(call.id)
         return
 
     name = plan_info['name'].get(lang, plan_info['name']['en'])
-    available_count = len(links)
+    available_count = 999
     
     markup = types.InlineKeyboardMarkup(row_width=3)
     btns = []
     for q in [1, 2, 3, 5, 10]:
         if q <= available_count:
             btns.append(types.InlineKeyboardButton(str(q), callback_data=f"set_qty_{plan_key}_{q}"))
-    
-    if not btns and available_count > 0:
-        # Fallback if available_count is less than 1 (shouldn't happen due to earlier check)
-        btns.append(types.InlineKeyboardButton(str(available_count), callback_data=f"set_qty_{plan_key}_{available_count}"))
         
     markup.add(*btns)
     
@@ -1886,7 +2275,7 @@ def select_quantity_callback(call):
     
     if plan_key not in plans_data: return
     
-    update_user(user_id, pending_plan=plan_key, pending_quantity=qty)
+    update_user(user_id, pending_plan=plan_key, pending_quantity=qty, user_state=None)
     user_type = users.get(user_id, {}).get('user_type', 'new')
     
     markup = types.InlineKeyboardMarkup()
@@ -1927,7 +2316,7 @@ def pay_method_callback(call):
             msg = LANGS[lang]['charge_summary_usdt'].format(amount=amount, address=USDT_ERC20_ADDRESS)
 
         bot.edit_message_text(msg, user_id, call.message.message_id, parse_mode='Markdown')
-        update_user(user_id, pending_plan=plan_key)
+        update_user(user_id, pending_plan=plan_key, user_state=None)
         bot.answer_callback_query(call.id)
         return
 
@@ -1958,31 +2347,41 @@ def pay_method_callback(call):
             bot.answer_callback_query(call.id, "Access Denied.")
             return
 
-        if plan_key in plans_data and len(plans_data[plan_key]['links']) >= qty:
+        if plan_key in plans_data:
             sent_links = []
-            for _ in range(qty):
-                sent_links.append(plans_data[plan_key]['links'].pop(0))
+            expiry_days = plans_data[plan_key].get('expiry_days', 30)
+            volume_gb = plans_data[plan_key].get('volume_gb', 0)
+            
+            for i in range(qty):
+                remark = f"trusted-{user_id}-{i+1}"
+                try:
+                    link = add_sui_client(remark, expiry_days, volume_gb)
+                    if link:
+                        sent_links.append(link)
+                except Exception as e:
+                    print(f"Error creating client: {e}")
 
-            save_all_plans()
-            
-            # Record debt and purchase
-            current_debt = u.get('debt', 0)
-            new_debt = current_debt + total_price_num
-            
-            # Add to purchase history and debt record
-            add_purchase_to_history(user_id, plan_key, sent_links)
-            
-            update_user(user_id, debt=new_debt, status='approved', last_plan=plan_key, pending_plan=None, pending_quantity=1)
-            
-            bot.edit_message_text(LANGS[lang]['trusted_payment_received'], user_id, call.message.message_id, parse_mode='Markdown')
-            plan_name = plans_data[plan_key]['name'].get(lang, plans_data[plan_key]['name']['en'])
-            for link in sent_links:
-                send_config_with_qr(user_id, link, lang, plan_name=plan_name)
+            if sent_links:
+                # Record debt and purchase
+                current_debt = u.get('debt', 0)
+                new_debt = current_debt + total_price_num
+                
+                # Add to purchase history and debt record
+                add_purchase_to_history(user_id, plan_key, sent_links)
+                
+                update_user(user_id, debt=new_debt, status='approved', last_plan=plan_key, pending_plan=None, pending_quantity=1)
+                
+                bot.edit_message_text(LANGS[lang]['trusted_payment_received'], user_id, call.message.message_id, parse_mode='Markdown')
+                plan_name = plans_data[plan_key]['name'].get(lang, plans_data[plan_key]['name']['en'])
+                for link in sent_links:
+                    send_config_with_qr(user_id, link, lang, plan_name=plan_name)
 
-            # Notify Admin
-            bot.send_message(ADMIN_ID, f"🤝 *Trusted Seller Order!*\nUser: `{user_id}` (@{u.get('username')})\nPlan: {plan_key}\nQty: {qty}\nPrice: {total_price_num}\nNew Total Debt: `{new_debt}`")
+                # Notify Admin
+                bot.send_message(ADMIN_ID, f"🤝 *Trusted Seller Order!*\nUser: `{user_id}` (@{u.get('username')})\nPlan: {plan_key}\nQty: {qty}\nPrice: {total_price_num}\nNew Total Debt: `{new_debt}`")
+            else:
+                bot.send_message(user_id, "❌ Error: Failed to generate configuration links.")
         else:
-            bot.send_message(user_id, "❌ Error: Not enough links available.")
+            bot.send_message(user_id, "❌ Error: Plan not found.")
         return
 
     price = price_lang
@@ -2005,25 +2404,35 @@ def pay_method_callback(call):
             update_user(user_id, wallet_balance=new_balance)
 
             # Send config
-            if plan_key in plans_data and len(plans_data[plan_key]['links']) >= qty:
+            if plan_key in plans_data:
                 sent_links = []
-                for _ in range(qty):
-                    sent_links.append(plans_data[plan_key]['links'].pop(0))
+                expiry_days = plans_data[plan_key].get('expiry_days', 30)
+                volume_gb = plans_data[plan_key].get('volume_gb', 0)
+                
+                for i in range(qty):
+                    remark = f"wallet-{user_id}-{i+1}"
+                    try:
+                        link = add_sui_client(remark, expiry_days, volume_gb)
+                        if link:
+                            sent_links.append(link)
+                    except Exception as e:
+                        print(f"Error creating client: {e}")
 
-                save_all_plans()
-                update_user(user_id, status='approved', last_plan=plan_key, pending_plan=None, pending_quantity=1)
-                add_purchase_to_history(user_id, plan_key, sent_links)
+                if sent_links:
+                    update_user(user_id, status='approved', last_plan=plan_key, pending_plan=None, pending_quantity=1)
+                    add_purchase_to_history(user_id, plan_key, sent_links)
 
-                bot.edit_message_text(LANGS[lang]['wallet_payment_success'].format(amount=total_price_num), user_id, call.message.message_id, parse_mode='Markdown')
-                plan_name = plans_data[plan_key]['name'].get(lang, plans_data[plan_key]['name']['en'])
-                for link in sent_links:
-                    send_config_with_qr(user_id, link, lang, plan_name=plan_name)
+                    bot.edit_message_text(LANGS[lang]['wallet_payment_success'].format(amount=total_price_num), user_id, call.message.message_id, parse_mode='Markdown')
+                    plan_name = plans_data[plan_key]['name'].get(lang, plans_data[plan_key]['name']['en'])
+                    for link in sent_links:
+                        send_config_with_qr(user_id, link, lang, plan_name=plan_name)
 
-                # Notify Admin
-                bot.send_message(ADMIN_ID, f"💰 *Wallet Payment Received!*\nUser: `{user_id}`\nPlan: {plan_key}\nQty: {qty}\nAmount: {total_price_num}\nLinks sent automatically.")
+                    # Notify Admin
+                    bot.send_message(ADMIN_ID, f"💰 *Wallet Payment Received!*\nUser: `{user_id}`\nPlan: {plan_key}\nQty: {qty}\nAmount: {total_price_num}\nLinks sent automatically.")
+                else:
+                    bot.send_message(user_id, "❌ Error: Failed to generate configuration links.")
             else:
-                bot.send_message(user_id, "❌ Error: Not enough links available for this plan. Please contact admin.")
-                bot.send_message(ADMIN_ID, f"⚠️ *Wallet Payment Received but NOT ENOUGH LINKS!* \nUser: `{user_id}`\nPlan: {plan_key}\nQty: {qty}")
+                bot.send_message(user_id, "❌ Error: Plan not found.")
         else:
             markup = types.InlineKeyboardMarkup()
             markup.add(types.InlineKeyboardButton(LANGS[lang]['charge_wallet'], callback_data="wallet_charge"))
@@ -2033,15 +2442,15 @@ def pay_method_callback(call):
     if method == 'card':
         msg = LANGS[lang]['after_choose_plan'].format(plan=escape_md(name), price=escape_md(price), qty=qty, total_price=escape_md(total_price_text), desc=escape_md(desc), card=escape_md(CARD_NUMBER))
         bot.edit_message_text(msg, user_id, call.message.message_id, parse_mode='Markdown')
-        update_user(user_id, pending_plan=plan_key)
+        update_user(user_id, pending_plan=plan_key, user_state=None)
     elif method == 'crypto':
         msg = LANGS[lang]['after_choose_plan_crypto'].format(plan=escape_md(name), price=escape_md(price), qty=qty, total_price=escape_md(total_price_text), desc=escape_md(desc), ton=escape_md(TON_ADDRESS))
         bot.edit_message_text(msg, user_id, call.message.message_id, parse_mode='Markdown')
-        update_user(user_id, pending_plan=plan_key)
+        update_user(user_id, pending_plan=plan_key, user_state=None)
     elif method == 'usdt':
         msg = LANGS[lang]['after_choose_plan_usdt'].format(plan=escape_md(name), price=escape_md(price), qty=qty, total_price=escape_md(total_price_text), desc=escape_md(desc), address=escape_md(USDT_ERC20_ADDRESS))
         bot.edit_message_text(msg, user_id, call.message.message_id, parse_mode='Markdown')
-        update_user(user_id, pending_plan=plan_key)
+        update_user(user_id, pending_plan=plan_key, user_state=None)
     elif method == 'stars':
         stars_price = plan_info.get('stars_price')
         if not stars_price:
@@ -2077,25 +2486,35 @@ def got_payment(message):
     plan_key = "_".join(parts[2:-1])
     qty = int(parts[-1])
     
-    if plan_key in plans_data and len(plans_data[plan_key]['links']) >= qty:
+    if plan_key in plans_data:
         sent_links = []
-        for _ in range(qty):
-            sent_links.append(plans_data[plan_key]['links'].pop(0))
+        expiry_days = plans_data[plan_key].get('expiry_days', 30)
+        volume_gb = plans_data[plan_key].get('volume_gb', 0)
+        
+        for i in range(qty):
+            remark = f"stars-{user_id}-{i+1}"
+            try:
+                link = add_sui_client(remark, expiry_days, volume_gb)
+                if link:
+                    sent_links.append(link)
+            except Exception as e:
+                print(f"Error creating client: {e}")
+
+        if sent_links:
+            update_user(user_id, status='approved', last_plan=plan_key, pending_plan=None, pending_quantity=1)
+            add_purchase_to_history(user_id, plan_key, sent_links)
             
-        save_all_plans()
-        update_user(user_id, status='approved', last_plan=plan_key, pending_plan=None, pending_quantity=1)
-        add_purchase_to_history(user_id, plan_key, sent_links)
-        
-        bot.send_message(user_id, LANGS[lang]['stars_payment_received'])
-        plan_name = plans_data[plan_key]['name'].get(lang, plans_data[plan_key]['name']['en'])
-        for link in sent_links:
-            send_config_with_qr(user_id, link, lang, plan_name=plan_name)
-        
-        # Notify Admin
-        bot.send_message(ADMIN_ID, f"⭐️ *Stars Payment Received!*\nUser: `{user_id}`\nPlan: {plan_key}\nQty: {qty}\nLinks sent automatically.")
+            bot.send_message(user_id, LANGS[lang]['stars_payment_received'])
+            plan_name = plans_data[plan_key]['name'].get(lang, plans_data[plan_key]['name']['en'])
+            for link in sent_links:
+                send_config_with_qr(user_id, link, lang, plan_name=plan_name)
+            
+            # Notify Admin
+            bot.send_message(ADMIN_ID, f"⭐️ *Stars Payment Received!*\nUser: `{user_id}`\nPlan: {plan_key}\nQty: {qty}\nLinks sent automatically.")
+        else:
+            bot.send_message(user_id, "❌ Error: Failed to generate configuration links.")
     else:
-        bot.send_message(user_id, "❌ Error: Not enough links available for this plan. Please contact admin for your refund/links.")
-        bot.send_message(ADMIN_ID, f"⚠️ *Stars Payment Received but NOT ENOUGH LINKS!* \nUser: `{user_id}`\nPlan: {plan_key}\nQty: {qty}")
+        bot.send_message(user_id, "❌ Error: Plan not found.")
 
 @bot.callback_query_handler(func=lambda call: call.data.startswith('admin_promote_'))
 def admin_promote_user(call):
@@ -2105,6 +2524,97 @@ def admin_promote_user(call):
     bot.send_message(ADMIN_ID, f"✅ User {target_uid} is now an OLD user (Can use card).")
     # Update the message markup to remove the promote button
     bot.edit_message_reply_markup(ADMIN_ID, call.message.message_id, reply_markup=None)
+
+def get_jwt_secret():
+    try:
+        # Check both local Windows developer path and remote Linux path
+        paths = ["/root/shipien/web/.env.local", "./web/.env.local"]
+        for p in paths:
+            if os.path.exists(p):
+                with open(p, "r") as f:
+                    for line in f:
+                        if line.startswith("JWT_SECRET="):
+                            return line.split("=")[1].strip().strip('"').strip("'")
+    except Exception:
+        pass
+    return "shipien-jwt-secret-key-2026-change-this-now!"
+
+@bot.callback_query_handler(func=lambda call: call.data.startswith('admin_approve_web_') or call.data.startswith('admin_reject_web_'))
+def admin_process_web_receipt(call):
+    is_approve = call.data.startswith('admin_approve_web_')
+    sub_id = call.data.replace('admin_approve_web_', '').replace('admin_reject_web_', '')
+    
+    import requests
+    jwt_secret = get_jwt_secret()
+    headers = {"Authorization": f"Bearer {jwt_secret}", "Content-Type": "application/json"}
+    
+    try:
+        r = requests.post("https://shipien-web.vercel.app/api/internal/subscription", json={"subscriptionId": sub_id}, headers=headers, timeout=15)
+        if r.status_code != 200:
+            bot.answer_callback_query(call.id, f"Error: API returned status {r.status_code}")
+            return
+        res = r.json()
+        if not res.get("success"):
+            bot.answer_callback_query(call.id, "Error: Subscription not found on web API")
+            return
+        sub = res["subscription"]
+    except Exception as e:
+        bot.answer_callback_query(call.id, f"Network Error: {str(e)}")
+        return
+
+    if not is_approve:
+        try:
+            r = requests.post("https://shipien-web.vercel.app/api/internal/subscription/reject", json={"subscriptionId": sub_id}, headers=headers, timeout=15)
+            if r.status_code == 200:
+                bot.answer_callback_query(call.id, "Subscription Rejected")
+                bot.edit_message_reply_markup(call.message.chat.id, call.message.message_id, reply_markup=None)
+                bot.send_message(ADMIN_ID, f"❌ Rejected web subscription for user {sub['username']}.")
+            else:
+                bot.answer_callback_query(call.id, "Failed to reject on Web DB")
+        except Exception as e:
+            bot.answer_callback_query(call.id, f"Network Error: {str(e)}")
+        return
+
+    remark = f"web-{sub['username']}"
+    expiry_days = sub["duration"]
+    
+    vol_str = sub["bandwidth"].upper()
+    if "UNLIMITED" in vol_str:
+        volume_gb = 0
+    else:
+        vol_match = re.search(r'\d+', vol_str)
+        volume_gb = int(vol_match.group()) if vol_match else 50
+        
+    try:
+        custom_name = sub.get("configName")
+        link = add_sui_client(remark, expiry_days, volume_gb, custom_name=custom_name)
+        if not link:
+            raise Exception("add_sui_client returned empty link")
+    except Exception as e:
+        bot.answer_callback_query(call.id, f"S-UI Client Error: {str(e)}")
+        return
+        
+    parsed = parse_anytls_link(link)
+    client_name = None
+    if parsed:
+        password, server, port, sni, node_tag = parsed
+        client_name = get_client_name_by_password(password)
+
+    try:
+        r = requests.post(
+            "https://shipien-web.vercel.app/api/internal/subscription/activate",
+            json={"subscriptionId": sub_id, "configLink": link, "clientName": client_name},
+            headers=headers,
+            timeout=15
+        )
+        if r.status_code == 200:
+            bot.answer_callback_query(call.id, "Approved and Activated!")
+            bot.edit_message_reply_markup(call.message.chat.id, call.message.message_id, reply_markup=None)
+            bot.send_message(ADMIN_ID, f"✅ Approved web subscription for {sub['username']}. Generated anytls configuration sent to web dashboard.")
+        else:
+            bot.answer_callback_query(call.id, f"API activation failed with status {r.status_code}")
+    except Exception as e:
+        bot.answer_callback_query(call.id, f"Network Error: {str(e)}")
 
 @bot.callback_query_handler(func=lambda call: call.data.startswith('admin_approve_') or call.data.startswith('admin_reject_'))
 def admin_process_receipt(call):
@@ -2135,24 +2645,37 @@ def admin_process_receipt(call):
         u = users.get(target_uid, {})
         qty = u.get('pending_quantity', 1)
 
-        if plan_key in plans_data and len(plans_data[plan_key]['links']) >= qty:
+        if plan_key in plans_data:
             sent_links = []
-            for _ in range(qty):
-                sent_links.append(plans_data[plan_key]['links'].pop(0))
+            expiry_days = plans_data[plan_key].get('expiry_days', 30)
+            volume_gb = plans_data[plan_key].get('volume_gb', 0)
             
-            save_all_plans()
-            update_user(target_uid, status='approved', last_plan=plan_key, pending_plan=None, pending_quantity=1)
-            add_purchase_to_history(target_uid, plan_key, sent_links)
+            custom_name = u.get('pending_config_name')
+            for i in range(qty):
+                remark = f"user-{target_uid}-{i+1}"
+                name_to_use = custom_name if i == 0 else f"{custom_name}{i+1}" if custom_name else None
+                try:
+                    link = add_sui_client(remark, expiry_days, volume_gb, custom_name=name_to_use)
+                    if link:
+                        sent_links.append(link)
+                except Exception as e:
+                    print(f"Error creating client: {e}")
             
-            plan_name = plans_data[plan_key]['name'].get(lang, plans_data[plan_key]['name']['en'])
-            for link in sent_links:
-                send_config_with_qr(target_uid, link, lang, plan_name=plan_name)
-            
-            bot.answer_callback_query(call.id, f"Approved and sent {qty} links!")
-            bot.edit_message_reply_markup(call.message.chat.id, call.message.message_id, reply_markup=None)
-            bot.send_message(ADMIN_ID, f"✅ User {target_uid} approved for {qty} x {plan_key}.")
+            if sent_links:
+                update_user(target_uid, status='approved', last_plan=plan_key, pending_plan=None, pending_quantity=1)
+                add_purchase_to_history(target_uid, plan_key, sent_links)
+                
+                plan_name = plans_data[plan_key]['name'].get(lang, plans_data[plan_key]['name']['en'])
+                for link in sent_links:
+                    send_config_with_qr(target_uid, link, lang, plan_name=plan_name)
+                
+                bot.answer_callback_query(call.id, f"Approved and sent {qty} links!")
+                bot.edit_message_reply_markup(call.message.chat.id, call.message.message_id, reply_markup=None)
+                bot.send_message(ADMIN_ID, f"✅ User {target_uid} approved for {qty} x {plan_key}.")
+            else:
+                bot.answer_callback_query(call.id, "Error: Failed to generate configuration links!")
         else:
-            bot.answer_callback_query(call.id, "Error: Not enough links available!")
+            bot.answer_callback_query(call.id, "Error: Plan not found!")
     elif action == 'reject':
         update_user(target_uid, status='rejected', pending_plan=None)
         bot.send_message(target_uid, LANGS[lang]['rejected'])
@@ -2181,5 +2704,7 @@ def admin_del_link(call):
         admin_list_links(call)
     bot.answer_callback_query(call.id, "Deleted.")
 
+print("Deleting webhook (in case of conflicts)...")
+bot.delete_webhook()
 print("Bot is running...")
 bot.infinity_polling()

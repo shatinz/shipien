@@ -1,0 +1,7 @@
+{
+  "framework": "nextjs",
+  "buildCommand": "prisma generate && prisma db push --accept-data-loss && npx tsx prisma/seed.ts && next build --webpack",
+  "installCommand": "npm install",
+  "devCommand": "next dev --webpack",
+  "regions": ["fra1"]
+}

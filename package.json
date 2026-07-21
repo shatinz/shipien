@@ -1,0 +1,28 @@
+{
+  "name": "shipienbot-tgcloud",
+  "version": "1.0.0",
+  "description": "Shipien Telegram Bot deployed on native Telegram Serverless Platform (tgcloud)",
+  "main": "handlers/message.js",
+  "type": "module",
+  "scripts": {
+    "push": "tgcloud push",
+    "status": "tgcloud status",
+    "migrate": "tgcloud migrate",
+    "run": "tgcloud run"
+  },
+  "dependencies": {
+    "@tgcloud/bot": "^0.1.0"
+  },
+  "devDependencies": {
+    "tgcloud": "^0.1.0"
+  },
+  "keywords": [
+    "telegram",
+    "bot",
+    "serverless",
+    "tgcloud",
+    "shipien"
+  ],
+  "author": "shipien",
+  "license": "MIT"
+}
