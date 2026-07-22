@@ -3,7 +3,7 @@
  * Docs: https://github.com/Gozargah/Marzban
  */
 
-const VPN_SERVER_URL = process.env.VPN_SERVER_URL || '';
+const VPN_SERVER_URL = process.env.VPN_SERVER_URL || 'https://vip-03.fl-sub.site:2096';
 const VPN_SERVER_TOKEN = process.env.VPN_SERVER_TOKEN || '';
 
 interface MarzbanUser {
