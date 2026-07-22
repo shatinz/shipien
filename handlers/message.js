@@ -29,6 +29,7 @@ export default async function handleMessage(update, context) {
       inline_keyboard: [
         [{ text: "🛍 خرید سرویس جدید", callback_data: "menu_buy" }],
         [{ text: "📋 سرویس‌های من", callback_data: "menu_my_services" }, { text: "💳 شارژ حساب", callback_data: "menu_recharge" }],
+        [{ text: "📱 نرم‌افزارهای سازگار", callback_data: "menu_apps" }],
         [{ text: "📢 کانال اطلاع‌رسانی", url: `https://t.me/${CONFIG.CHANNEL_ID.replace('@', '')}` }, { text: "📞 پشتیبانی", callback_data: "menu_support" }]
       ]
     };
@@ -40,11 +41,25 @@ export default async function handleMessage(update, context) {
     return;
   }
 
+  // Handle /apps command
+  if (text.startsWith('/apps')) {
+    const appsMsg = `📱 **نرم‌افزارهای سازگار با کانفیگ‌های جدید شیپین:**\n\n` +
+      `🤖 **اندروید (Android):**\n• v2rayNG\n• Hiddify\n\n` +
+      `🍎 **آیفون (iOS):**\n• FairVPN\n• Hiddify\n\n` +
+      `💻 **ویندوز (Windows):**\n• v2rayNG\n• Hiddify\n• Netch\n\n` +
+      `🍏 **مک (macOS):**\n• Clash Verge\n\n` +
+      `🐧 **لینوکس (Linux):**\n• Clash Verge`;
+
+    await context.telegram.sendMessage(chatId, appsMsg, { parse_mode: 'Markdown' });
+    return;
+  }
+
   // Handle /help command
   if (text.startsWith('/help')) {
-    const helpMsg = `ℹ️ **راهنمای استفاده از ربات شیپین:**\n\n` +
+    const helpMsg = `ℹ️ **راهنمای استفاده از ربات شیپین (@${CONFIG.BOT_USERNAME}):**\n\n` +
       `/start - شروع مجدد ربات و نمایش منوی اصلی\n` +
       `/buy - مشاهده پلن‌ها و خرید مستقیم\n` +
+      `/apps - مشاهده نرم‌افزارهای سازگار\n` +
       `/status - وضعیت حساب کاربری\n` +
       `/help - دریافت راهنما`;
 

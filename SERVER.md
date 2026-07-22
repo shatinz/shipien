@@ -58,8 +58,21 @@ The `/root` directory has been organized into the following structure:
 *   **Hysteria2 Success**: A working `hy2://` configuration targeting `foto.jibijij.top` was established. The `hysteria` client is now running as a persistent systemd service (`hysteria_proxy.service`) on `127.0.0.1:12001`. Marzban is routed through this SOCKS5 proxy to restore user connectivity.
 
 ## Shipienbot Deployment Update (2026-06-29)
+*   **Bot Username**: `@shipien_bot`
 *   **Application Directory**: Configured at `/root/shipien/` containing `shipienbot.py`, `configs.py`, and `requirements.txt`.
 *   **Dependency Setup**: Installed Python dependencies offline from local wheels into `/root/shipien/venv/` (offline to prevent network handshake failures over proxy).
 *   **Systemd Integration**: Enabled and started `shipienbot.service` to keep the bot active persistently in the background. Currently active and running.
 *   **Credentials**: Configured with the admin ID (`8373593549`) and correct bot token.
+
+## PasarGuard Management Panel Update (2026-07-22)
+*   **Panel URL**: `https://vip-03.fl-sub.site:2096/dashboard`
+*   **Panel Type**: PasarGuard Panel (Marzban REST API compatible)
+*   **Admin Username**: `shipien`
+*   **Client App Compatibility**:
+    *   Android: v2rayNG, Hiddify
+    *   iOS: FairVPN, Hiddify
+    *   Windows: v2rayNG, Hiddify, Netch
+    *   macOS: Clash Verge
+    *   Linux: Clash Verge
+
 

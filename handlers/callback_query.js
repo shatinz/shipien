@@ -38,6 +38,7 @@ export default async function handleCallbackQuery(update, context) {
       inline_keyboard: [
         [{ text: "🛍 خرید سرویس جدید", callback_data: "menu_buy" }],
         [{ text: "📋 سرویس‌های من", callback_data: "menu_my_services" }, { text: "💳 شارژ حساب", callback_data: "menu_recharge" }],
+        [{ text: "📱 نرم‌افزارهای سازگار", callback_data: "menu_apps" }],
         [{ text: "📢 کانال اطلاع‌رسانی", url: `https://t.me/${CONFIG.CHANNEL_ID.replace('@', '')}` }, { text: "📞 پشتیبانی", callback_data: "menu_support" }]
       ]
     };
@@ -45,6 +46,25 @@ export default async function handleCallbackQuery(update, context) {
     await context.telegram.editMessageText(chatId, messageId, welcomeMsg, {
       parse_mode: 'Markdown',
       reply_markup: inlineKeyboard
+    });
+    return;
+  }
+
+  if (data === "menu_apps") {
+    const appsMsg = `📱 **نرم‌افزارهای سازگار با کانفیگ‌های جدید شیپین:**\n\n` +
+      `🤖 **اندروید (Android):**\n• v2rayNG\n• Hiddify\n\n` +
+      `🍎 **آیفون (iOS):**\n• FairVPN\n• Hiddify\n\n` +
+      `💻 **ویندوز (Windows):**\n• v2rayNG\n• Hiddify\n• Netch\n\n` +
+      `🍏 **مک (macOS):**\n• Clash Verge\n\n` +
+      `🐧 **لینوکس (Linux):**\n• Clash Verge`;
+
+    await context.telegram.editMessageText(chatId, messageId, appsMsg, {
+      parse_mode: 'Markdown',
+      reply_markup: {
+        inline_keyboard: [
+          [{ text: "🔙 بازگشت به منوی اصلی", callback_data: "menu_main" }]
+        ]
+      }
     });
     return;
   }
